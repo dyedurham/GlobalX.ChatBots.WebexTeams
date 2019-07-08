@@ -9,6 +9,7 @@ namespace GlobalX.ChatBots.WebexTeams.Models {
         public string ToPersonEmail { get; set; }
         public string Text { get; set; }
         public string Markdown { get; set; }
+        public string Html { get; set; }
         public string[] Files { get; set; }
         public string PersonId { get; set; }
         public string PersonEmail { get; set; }

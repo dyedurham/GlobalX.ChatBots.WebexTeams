@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GlobalX.ChatBots.WebexTeams.Services
 {
-    public class HttpClientProxy : IHttpClientProxy
+    internal class HttpClientProxy : IHttpClientProxy
     {
         private const string BaseUrl = "https://api.ciscospark.com/v1";
 
