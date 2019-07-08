@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using GlobalX.ChatBots.Core;
 using GlobalX.ChatBots.Core.Messages;
 using GlobalX.ChatBots.Core.People;
@@ -24,7 +21,7 @@ namespace GlobalX.ChatBots.WebexTeams
             services.AddScoped<IMessageHandler, WebexMessageHandler>();
             services.AddScoped<IPersonHandler, WebexPersonHandler>();
             services.AddScoped<IRoomHandler, WebexRoomHandler>();
-            services.AddSingleton<IWebexTeamsMapper>((IWebexTeamsMapper)WebexTeamsMapperFactory.CreateMapper());
+            services.AddSingleton<IWebexTeamsMapper>(WebexTeamsMapperFactory.CreateMapper());
             return services;
         }
     }

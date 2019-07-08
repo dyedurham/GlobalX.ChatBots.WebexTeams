@@ -11,7 +11,7 @@ namespace GlobalX.ChatBots.WebexTeams.Mappers.Converters
 
         public RoomType Convert(string source, RoomType destination, ResolutionContext context)
         {
-            switch(source)
+            switch (source)
             {
                 case Direct:
                     return RoomType.Direct;
