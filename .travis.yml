@@ -1,0 +1,15 @@
+language: csharp
+mono: none
+dotnet: 2.1.700
+env: VERSION=0.1.0
+install:
+  - dotnet restore
+script:
+  - dotnet build src/GlobalX.ChatBots.WebexTeams/GlobalX.ChatBots.WebexTeams.csproj
+  - dotnet test src/GlobalX.ChatBots.WebexTeams.Tests/GlobalX.ChatBots.WebexTeams.Tests.csproj
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: chmod +x ./deploy.sh && ./deploy.sh $VERSION $NUGET_API_KEY
+  on:
+    branch: master
