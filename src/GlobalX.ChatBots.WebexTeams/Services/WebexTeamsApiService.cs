@@ -1,37 +1,31 @@
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using GlobalXMessage = GlobalX.ChatBots.Core.Messages.Message;
-using WebexTeamsMessage = GlobalX.ChatBots.WebexTeams.Models.Message;
+using GlobalX.ChatBots.WebexTeams.Models;
 
 namespace GlobalX.ChatBots.WebexTeams.Services
 {
     internal class WebexTeamsApiService : IWebexTeamsApiService
     {
         private readonly IHttpClientProxy _httpClientProxy;
-        private readonly IWebexTeamsMessageParser _messageParser;
 
-        public WebexTeamsApiService(IHttpClientProxy httpClientProxy, IWebexTeamsMessageParser messageParser)
+        public WebexTeamsApiService(IHttpClientProxy httpClientProxy)
         {
             _httpClientProxy = httpClientProxy;
-            _messageParser = messageParser;
         }
 
-        public async Task<GlobalXMessage> GetMessageAsync(string messageId)
+        public async Task<Message> GetMessageAsync(string messageId)
         {
             var result = await _httpClientProxy.GetAsync($"/messages/{messageId}").ConfigureAwait(false);
-            var message = JsonConvert.DeserializeObject<WebexTeamsMessage>(result);
-            var mapped = _messageParser.ParseMessage(message);
-            return mapped;
+            var message = JsonConvert.DeserializeObject<Message>(result);
+            return message;
         }
 
-        public async Task<GlobalXMessage> SendMessageAsync(GlobalXMessage message)
+        public async Task<Message> SendMessageAsync(CreateMessageRequest request)
         {
-            var body = _messageParser.ParseCreateMessageRequest(message);
-            var json = JsonConvert.SerializeObject(body);
+            var json = JsonConvert.SerializeObject(request);
             var result = await _httpClientProxy.PostAsync("/messages", json).ConfigureAwait(false);
-            var resultObject = JsonConvert.DeserializeObject<WebexTeamsMessage>(result);
-            var mapped = _messageParser.ParseMessage(resultObject);
-            return mapped;
+            var resultObject = JsonConvert.DeserializeObject<Message>(result);
+            return resultObject;
         }
     }
 }

@@ -12,7 +12,7 @@ using WebexTeamsMessage = GlobalX.ChatBots.WebexTeams.Models.Message;
 
 namespace GlobalX.ChatBots.WebexTeams.Services
 {
-    internal class WebexTeamsMessageParser : IWebexTeamsMessageParser
+    public class WebexTeamsMessageParser : IWebexTeamsMessageParser
     {
         private const string PersonIdPrefix = "ciscospark://us/PEOPLE/";
         private const string RoomIdPrefix = "ciscospark://us/ROOM/";
