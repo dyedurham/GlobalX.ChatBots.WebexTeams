@@ -15,6 +15,7 @@ namespace GlobalX.ChatBots.WebexTeams.Services
     internal class WebexTeamsMessageParser : IWebexTeamsMessageParser
     {
         private const string PersonIdPrefix = "ciscospark://us/PEOPLE/";
+        private const string RoomIdPrefix = "ciscospark://us/ROOM/";
         private const string GroupMention = "group";
         private const string PersonMention = "person";
 
@@ -55,8 +56,56 @@ namespace GlobalX.ChatBots.WebexTeams.Services
 
         public CreateMessageRequest ParseCreateMessageRequest(GlobalXMessage message)
         {
-            // TODO implement this properly
-            return new CreateMessageRequest();
+            var request = new CreateMessageRequest();
+            var roomBytes = Convert.FromBase64String(message.RoomId);
+            var roomDecoded = Encoding.UTF8.GetString(roomBytes);
+
+            if (roomDecoded.StartsWith(RoomIdPrefix))
+            {
+                request.RoomId = message.RoomId;
+            }
+            else if (roomDecoded.StartsWith(PersonIdPrefix))
+            {
+                request.ToPersonId = message.RoomId;
+            }
+            else
+            {
+                throw new ArgumentException($"Invalid room ID {message.RoomId}");
+            }
+
+            if (!string.IsNullOrWhiteSpace(message.Text) && (message.MessageParts == null || message.MessageParts.Length == 0))
+            {
+                request.Markdown = message.Text;
+            }
+            else if (message.MessageParts?.Length > 0)
+            {
+                var markdownBuilder = new StringBuilder();
+                foreach (MessagePart messagePart in message.MessageParts)
+                {
+                    switch (messagePart.MessageType)
+                    {
+                        case MessageType.Text:
+                            markdownBuilder.Append(messagePart.Text);
+                            break;
+                        case MessageType.PersonMention:
+                            markdownBuilder.Append($"<@personId:{messagePart.UserId}|{messagePart.Text}>");
+                            break;
+                        case MessageType.GroupMention:
+                            markdownBuilder.Append($"<@{messagePart.UserId}>");
+                            break;
+                        default:
+                            throw new ArgumentException($"Invalid message type {messagePart.MessageType}");
+                    }
+                }
+
+                request.Markdown = markdownBuilder.ToString();
+            }
+            else
+            {
+                throw new ArgumentException("Please provide a message to send");
+            }
+
+            return request;
         }
 
         private XmlDocument TryParseXml(string xml)
