@@ -14,7 +14,8 @@ namespace GlobalX.ChatBots.WebexTeams.Mappers
             });
 
             config.AssertConfigurationIsValid();
-            return (IWebexTeamsMapper)config.CreateMapper();
+            var mapper = config.CreateMapper();
+            return new WebexTeamsMapper(mapper);
         }
     }
 }
