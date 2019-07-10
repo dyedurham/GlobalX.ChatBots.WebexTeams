@@ -1,11 +1,12 @@
 using GlobalX.ChatBots.WebexTeams.Models;
-using Message = GlobalX.ChatBots.Core.Messages.Message;
+using GlobalXMessage = GlobalX.ChatBots.Core.Messages.Message;
+using WebexTeamsMessage = GlobalX.ChatBots.WebexTeams.Models.Message;
 
 namespace GlobalX.ChatBots.WebexTeams.Services
 {
     public interface IWebexTeamsMessageParser
     {
-        Message ParseMessage(Models.Message message);
-        CreateMessageRequest ParseCreateMessageRequest(Message message);
+        GlobalXMessage ParseMessage(WebexTeamsMessage message);
+        CreateMessageRequest ParseCreateMessageRequest(GlobalXMessage message);
     }
 }

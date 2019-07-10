@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using AutoMapper;
@@ -16,7 +17,7 @@ namespace GlobalX.ChatBots.WebexTeams.Services
     {
         private const string PersonIdPrefix = "ciscospark://us/PEOPLE/";
         private const string RoomIdPrefix = "ciscospark://us/ROOM/";
-        private const string GroupMention = "group";
+        private const string GroupMention = "groupMention";
         private const string PersonMention = "person";
 
         private readonly IMapper _mapper;
@@ -49,6 +50,7 @@ namespace GlobalX.ChatBots.WebexTeams.Services
                 {
                     parts.Add(ParseMessagePart(node));
                 }
+                mappedMessage.MessageParts = parts.ToArray();
             }
 
             return mappedMessage;
@@ -112,6 +114,7 @@ namespace GlobalX.ChatBots.WebexTeams.Services
         {
             bool success = false;
             var document = new XmlDocument();
+            document.PreserveWhitespace = true;
 
             try
             {
@@ -134,14 +137,14 @@ namespace GlobalX.ChatBots.WebexTeams.Services
 
         private MessagePart ParseMessagePart(XmlNode node)
         {
-            if (node.HasChildNodes)
+            if (node.ChildNodes.OfType<XmlElement>().Any())
             {
                 throw new ArgumentException("Html has more levels than expected");
             }
 
             var part = new MessagePart();
 
-            if (node.Attributes["data-object-type"] != null)
+            if (node.Attributes != null && node.Attributes["data-object-type"] != null)
             {
                 string type = node.Attributes["data-object-type"].InnerText;
                 if (type == GroupMention)
@@ -160,6 +163,10 @@ namespace GlobalX.ChatBots.WebexTeams.Services
                     }
 
                     part.UserId = ParseUserId(userId);
+                }
+                else
+                {
+                    throw new ArgumentException($"Invalid mention type {type}");
                 }
             }
             else

@@ -4,7 +4,7 @@ using WebexTeamsMessage = GlobalX.ChatBots.WebexTeams.Models.Message;
 
 namespace GlobalX.ChatBots.WebexTeams.Mappers.Profiles
 {
-    internal class MessageMapper : Profile
+    public class MessageMapper : Profile
     {
         public MessageMapper() : this("MessageMapper") { }
 
