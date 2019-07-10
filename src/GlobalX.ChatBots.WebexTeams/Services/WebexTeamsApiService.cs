@@ -4,7 +4,7 @@ using GlobalX.ChatBots.WebexTeams.Models;
 
 namespace GlobalX.ChatBots.WebexTeams.Services
 {
-    public class WebexTeamsApiService : IWebexTeamsApiService
+    internal class WebexTeamsApiService : IWebexTeamsApiService
     {
         private readonly IHttpClientProxy _httpClientProxy;
 

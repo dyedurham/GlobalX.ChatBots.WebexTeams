@@ -2,9 +2,9 @@ using System;
 using System.Threading.Tasks;
 using GlobalX.ChatBots.Core.Rooms;
 
-namespace GlobalX.ChatBots.WebexTeams.Rooms
+namespace GlobalX.ChatBots.WebexTeams.Services
 {
-    public class WebexRoomHandler : IRoomHandler
+    public class WebexTeamsRoomHandler : IRoomHandler
     {
         public Task<Room> GetRoomAsync(string id)
         {

@@ -1,15 +1,14 @@
 using System.Threading.Tasks;
 using GlobalX.ChatBots.Core.Messages;
-using GlobalX.ChatBots.WebexTeams.Services;
 
-namespace GlobalX.ChatBots.WebexTeams.Messages
+namespace GlobalX.ChatBots.WebexTeams.Services
 {
-    public class WebexMessageHandler : IMessageHandler
+    public class WebexTeamsMessageHandler : IMessageHandler
     {
         private readonly IWebexTeamsApiService _apiService;
         private readonly IWebexTeamsMessageParser _messageParser;
 
-        public WebexMessageHandler(IWebexTeamsApiService apiService, IWebexTeamsMessageParser messageParser)
+        public WebexTeamsMessageHandler(IWebexTeamsApiService apiService, IWebexTeamsMessageParser messageParser)
         {
             _apiService = apiService;
             _messageParser = messageParser;

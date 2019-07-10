@@ -5,9 +5,9 @@ using GlobalX.ChatBots.Core.Rooms;
 
 namespace GlobalX.ChatBots.WebexTeams
 {
-    public class WebexChatHelper : IChatHelper
+    internal class WebexTeamsChatHelper : IChatHelper
     {
-        public WebexChatHelper(IMessageHandler messages, IPersonHandler people, IRoomHandler rooms)
+        public WebexTeamsChatHelper(IMessageHandler messages, IPersonHandler people, IRoomHandler rooms)
         {
             Messages = messages;
             People = people;
