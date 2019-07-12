@@ -9,3 +9,51 @@
 </p>
 
 A .NET Core library containing implementations of core interfaces of [GlobalX.ChatBots.Core](https://github.com/GlobalX/GlobalX.ChatBots.Core) for Webex Teams.
+
+## Getting started
+
+### Configuration
+
+TODO
+
+### Using Dependency Injection
+
+In the `ConfigureServices` method of your `Startup.cs` file, add the following:
+
+```cs
+using GlobalX.ChatBots.WebexTeams;
+
+public IServiceProvider ConfigureServices(IServiceCollection services)
+{
+    // Add other service registrations here
+    services.ConfigureWebexTeamsBot();
+    return services;
+}
+```
+
+### Without Dependency Injection
+
+You can get a webex teams implementation of the library by calling the `WebexTeamsChatHelperFactory.CreateWebexTeamsChatHelper` method.
+
+```cs
+using GlobalX.ChatBots.Core;
+using GlobalX.ChatBots.WebexTeams;
+
+// Some code here
+
+IChatHelper webexTeamsChatHelper = WebexTeamsChatHelperFactory.CreateWebexTeamsChatHelper();
+```
+
+## Contributing
+
+This repository uses conventional commit messages. You can automate the process of commiting by using commitizen. You can install it using npm:
+
+```
+npm install -g commitizen
+npm install -g cz-conventional-changelog
+```
+
+Then you can commit using:
+
+- `git add .`
+- `git cz`
