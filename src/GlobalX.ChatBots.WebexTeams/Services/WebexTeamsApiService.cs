@@ -27,5 +27,12 @@ namespace GlobalX.ChatBots.WebexTeams.Services
             var resultObject = JsonConvert.DeserializeObject<Message>(result);
             return resultObject;
         }
+
+        public async Task<Person> GetPersonAsync(string personId)
+        {
+            var result = await _httpClientProxy.GetAsync($"/people/{personId}").ConfigureAwait(false);
+            var person = JsonConvert.DeserializeObject<Person>(result);
+            return person;
+        }
     }
 }

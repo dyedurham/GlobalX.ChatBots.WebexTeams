@@ -1,4 +1,5 @@
 using AutoMapper;
+using GlobalX.ChatBots.Core.People;
 using GlobalX.ChatBots.Core.Rooms;
 using GlobalX.ChatBots.WebexTeams.Mappers.Converters;
 
@@ -12,6 +13,8 @@ namespace GlobalX.ChatBots.WebexTeams.Mappers.Profiles
         {
             CreateMap<string, RoomType>()
                 .ConvertUsing<StringToRoomTypeConverter>();
+            CreateMap<string, PersonType>()
+                .ConvertUsing<StringToPersonTypeConverter>();
         }
     }
 }
