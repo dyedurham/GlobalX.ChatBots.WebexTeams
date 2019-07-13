@@ -34,7 +34,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
 
         [Theory]
         [MemberData(nameof(WebexTeamsMessageParserTestData.ParseMessageTestData), MemberType = typeof(WebexTeamsMessageParserTestData))]
-        public void TestParseMessage(WebexTeamsMessage input, GlobalXMessage output)
+        internal void TestParseMessage(WebexTeamsMessage input, GlobalXMessage output)
         {
             this.Given(x => GivenAWebexTeamsMessage(input))
                 .When(x => WhenParsingAMessage())
@@ -44,7 +44,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
 
         [Theory]
         [MemberData(nameof(WebexTeamsMessageParserTestData.ParseCreateMessageRequestTestData), MemberType = typeof(WebexTeamsMessageParserTestData))]
-        public void TestParseCreateMessageRequest(GlobalXMessage input, CreateMessageRequest output)
+        internal void TestParseCreateMessageRequest(GlobalXMessage input, CreateMessageRequest output)
         {
             this.Given(x => GivenAGlobalXMessage(input))
                 .When(x => WhenParsingACreateMessageRequest())

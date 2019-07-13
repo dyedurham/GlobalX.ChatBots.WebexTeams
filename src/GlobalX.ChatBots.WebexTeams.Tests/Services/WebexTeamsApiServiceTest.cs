@@ -28,7 +28,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
 
         [Theory]
         [MemberData(nameof(WebexTeamsApiServiceTestData.GetMessageTestData), MemberType = typeof(WebexTeamsApiServiceTestData))]
-        public void TestGetMessage(string messageId, string httpResponse, Message response)
+        internal void TestGetMessage(string messageId, string httpResponse, Message response)
         {
             this.Given(x => GivenAMessageId(messageId))
                 .When(x => WhenGettingAMessage(httpResponse))
@@ -39,7 +39,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
 
         [Theory]
         [MemberData(nameof(WebexTeamsApiServiceTestData.SendMessageTestData), MemberType = typeof(WebexTeamsApiServiceTestData))]
-        public void TestSendMessage(CreateMessageRequest request, string httpResponse, Message response)
+        internal void TestSendMessage(CreateMessageRequest request, string httpResponse, Message response)
         {
             this.Given(x => GivenACreateMessageRequest(request))
                 .When(x => WhenSendingAMessage(httpResponse))

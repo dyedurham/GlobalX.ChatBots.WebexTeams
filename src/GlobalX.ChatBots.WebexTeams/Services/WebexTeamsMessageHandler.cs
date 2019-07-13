@@ -3,7 +3,7 @@ using GlobalX.ChatBots.Core.Messages;
 
 namespace GlobalX.ChatBots.WebexTeams.Services
 {
-    public class WebexTeamsMessageHandler : IMessageHandler
+    internal class WebexTeamsMessageHandler : IMessageHandler
     {
         private readonly IWebexTeamsApiService _apiService;
         private readonly IWebexTeamsMessageParser _messageParser;

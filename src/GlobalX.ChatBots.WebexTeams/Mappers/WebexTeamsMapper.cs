@@ -6,7 +6,7 @@ using AutoMapper;
 
 namespace GlobalX.ChatBots.WebexTeams.Mappers
 {
-    public class WebexTeamsMapper : IWebexTeamsMapper
+    internal class WebexTeamsMapper : IWebexTeamsMapper
     {
         private readonly IMapper _mapper;
 

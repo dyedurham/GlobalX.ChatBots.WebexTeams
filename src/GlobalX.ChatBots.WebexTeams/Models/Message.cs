@@ -1,7 +1,7 @@
 using System;
 
 namespace GlobalX.ChatBots.WebexTeams.Models {
-    public class Message {
+    internal class Message {
         public string Id { get; set; }
         public string RoomId { get; set; }
         public string RoomType { get; set; }

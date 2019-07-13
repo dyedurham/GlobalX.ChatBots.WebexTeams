@@ -4,7 +4,7 @@ using GlobalX.ChatBots.WebexTeams.Mappers.Converters;
 
 namespace GlobalX.ChatBots.WebexTeams.Mappers.Profiles
 {
-    public class CommonMappers : Profile
+    internal class CommonMappers : Profile
     {
         public CommonMappers() : this("CommonMappers") { }
 

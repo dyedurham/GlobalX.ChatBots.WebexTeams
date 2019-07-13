@@ -1,5 +1,5 @@
 namespace GlobalX.ChatBots.WebexTeams.Models {
-    public class CreateMessageRequest {
+    internal class CreateMessageRequest {
         public string RoomId { get; set; }
         public string ToPersonId { get; set; }
         public string ToPersonEmail { get; set; }

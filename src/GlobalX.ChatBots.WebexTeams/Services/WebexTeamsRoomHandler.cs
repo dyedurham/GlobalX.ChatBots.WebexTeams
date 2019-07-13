@@ -4,7 +4,7 @@ using GlobalX.ChatBots.Core.Rooms;
 
 namespace GlobalX.ChatBots.WebexTeams.Services
 {
-    public class WebexTeamsRoomHandler : IRoomHandler
+    internal class WebexTeamsRoomHandler : IRoomHandler
     {
         public Task<Room> GetRoomAsync(string id)
         {

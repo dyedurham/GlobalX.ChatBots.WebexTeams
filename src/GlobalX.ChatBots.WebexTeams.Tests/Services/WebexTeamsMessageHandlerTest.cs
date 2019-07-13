@@ -31,7 +31,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
 
         [Theory]
         [MemberData(nameof(WebexTeamsMessageHandlerTestData.SuccessfulSendMessageTestData), MemberType = typeof(WebexTeamsMessageHandlerTestData))]
-        public void TestSendMessage(GlobalXMessage input, CreateMessageRequest parsedInput, WebexTeamsMessage apiResponse, GlobalXMessage output)
+        internal void TestSendMessage(GlobalXMessage input, CreateMessageRequest parsedInput, WebexTeamsMessage apiResponse, GlobalXMessage output)
         {
             this.Given(x => GivenAGlobalXMessage(input))
                 .When(x => WhenSendingAMessage(parsedInput, apiResponse, output))

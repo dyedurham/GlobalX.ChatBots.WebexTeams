@@ -4,7 +4,7 @@ using WebexTeamsMessage = GlobalX.ChatBots.WebexTeams.Models.Message;
 
 namespace GlobalX.ChatBots.WebexTeams.Services
 {
-    public interface IWebexTeamsMessageParser
+    internal interface IWebexTeamsMessageParser
     {
         GlobalXMessage ParseMessage(WebexTeamsMessage message);
         CreateMessageRequest ParseCreateMessageRequest(GlobalXMessage message);
