@@ -31,10 +31,10 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
 
         [Theory]
         [MemberData(nameof(WebexTeamsMessageHandlerTestData.SuccessfulSendMessageTestData), MemberType = typeof(WebexTeamsMessageHandlerTestData))]
-        internal void TestSendMessage(GlobalXMessage input, CreateMessageRequest parsedInput, WebexTeamsMessage apiResponse, GlobalXMessage output)
+        internal void TestSendMessage(GlobalXMessage input, CreateMessageRequest parsedInput, WebexTeamsMessage apiResponse, GlobalXMessage parsedApiResponse, Person sender, GlobalXMessage output)
         {
             this.Given(x => GivenAGlobalXMessage(input))
-                .When(x => WhenSendingAMessage(parsedInput, apiResponse, output))
+                .When(x => WhenSendingAMessage(parsedInput, apiResponse, parsedApiResponse, sender))
                 .Then(x => ThenItShouldCallApiService())
                 .And(x => ThenItShouldReturnAMessage(output))
                 .BDDfy();
@@ -45,11 +45,12 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
             _input = input;
         }
 
-        private async void WhenSendingAMessage(CreateMessageRequest parsedInput, WebexTeamsMessage apiResponse, GlobalXMessage output)
+        private async void WhenSendingAMessage(CreateMessageRequest parsedInput, WebexTeamsMessage apiResponse, GlobalXMessage parsedApiResponse, Person sender)
         {
             _messageParser.ParseCreateMessageRequest(_input).Returns(parsedInput);
             _apiService.SendMessageAsync(parsedInput).Returns(Task.FromResult(apiResponse));
-            _messageParser.ParseMessage(apiResponse).Returns(output);
+            _messageParser.ParseMessage(apiResponse).Returns(parsedApiResponse);
+            _apiService.GetPersonAsync(parsedApiResponse.SenderId).Returns(Task.FromResult(sender));
             _output = await _subject.SendMessageAsync(_input);
         }
 

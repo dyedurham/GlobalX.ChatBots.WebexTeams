@@ -95,6 +95,45 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                     SenderId = "senderId",
                     RoomId = "Y2lzY29zcGFyazovL3VzL1JPT00vcm9vbUlk",
                     RoomType = RoomType.Group
+                },
+                new Person
+                {
+                    Id = "senderId",
+                    DisplayName = "SenderName"
+                },
+                new GlobalXMessage
+                {
+                    Created = new DateTime(2019, 7, 8, 22, 55, 52),
+                    Text = "TestBot All test things",
+                    MessageParts = new[]
+                    {
+                        new MessagePart
+                        {
+                            MessageType = MessageType.PersonMention,
+                            Text = "TestBot",
+                            UserId = "testBotId"
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = " "
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.GroupMention,
+                            Text = "All",
+                            UserId = "all"
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = " test things",
+                        }
+                    },
+                    SenderId = "senderId",
+                    SenderName = "SenderName",
+                    RoomId = "Y2lzY29zcGFyazovL3VzL1JPT00vcm9vbUlk",
+                    RoomType = RoomType.Group
                 }
             };
 
@@ -134,6 +173,28 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                         }
                     },
                     SenderId = "senderId",
+                    RoomId = "roomId",
+                    RoomType = RoomType.Direct
+                },
+                new Person
+                {
+                    Id = "senderId",
+                    DisplayName = "SenderName"
+                },
+                new GlobalXMessage
+                {
+                    Created = new DateTime(2019, 6, 30, 22, 32, 59),
+                    Text = "test",
+                    MessageParts = new[]
+                    {
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = "test"
+                        }
+                    },
+                    SenderId = "senderId",
+                    SenderName = "SenderName",
                     RoomId = "roomId",
                     RoomType = RoomType.Direct
                 }

@@ -19,6 +19,8 @@ namespace GlobalX.ChatBots.WebexTeams.Services
             var request = _messageParser.ParseCreateMessageRequest(message);
             var result = await _apiService.SendMessageAsync(request).ConfigureAwait(false);
             var mapped = _messageParser.ParseMessage(result);
+            var sender = await _apiService.GetPersonAsync(mapped.SenderId);
+            mapped.SenderName = sender.DisplayName;
             return mapped;
         }
     }
