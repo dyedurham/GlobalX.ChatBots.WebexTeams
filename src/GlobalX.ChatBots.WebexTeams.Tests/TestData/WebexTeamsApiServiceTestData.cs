@@ -137,6 +137,75 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
             };
         }
 
+        public static IEnumerable<object[]> GetPersonTestData()
+        {
+            yield return new object[]
+            {
+                "personId",
+                @"{
+    ""id"": ""personId"",
+    ""emails"": [
+        ""test.person@test.com""
+    ],
+    ""displayName"": ""Test Person"",
+    ""nickName"": ""Testy"",
+    ""firstName"": ""Test"",
+    ""lastName"": ""Person"",
+    ""avatar"": ""https://fake-address.com"",
+    ""orgId"": ""orgId"",
+    ""created"": ""2018-08-12T22:17:24.697Z"",
+    ""status"": ""unknown"",
+    ""type"": ""person""
+}",
+                new Person
+                {
+                    Id = "personId",
+                    Emails = new []{ "test.person@test.com" },
+                    DisplayName = "Test Person",
+                    NickName = "Testy",
+                    FirstName = "Test",
+                    LastName = "Person",
+                    Avatar = "https://fake-address.com",
+                    OrgId = "orgId",
+                    Created = DateTime.Parse("2018-08-12T22:17:24.697Z", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal),
+                    Status = "unknown",
+                    Type = "person"
+                }
+            };
+
+            yield return new object[]
+            {
+                "botId",
+                @"{
+    ""id"": ""botId"",
+    ""emails"": [
+        ""TestBot@webex.bot""
+    ],
+    ""phoneNumbers"": [],
+    ""displayName"": ""TestBot"",
+    ""nickName"": ""TestBot"",
+    ""avatar"": ""https://test-bot-avatar.com"",
+    ""orgId"": ""orgId"",
+    ""created"": ""2018-12-17T22:26:10.283Z"",
+    ""status"": ""unknown"",
+    ""type"": ""bot""
+}",
+                new Person
+                {
+                    Id = "botId",
+                    Emails = new []{ "TestBot@webex.bot" },
+                    PhoneNumbers = new string[0],
+                    DisplayName = "TestBot",
+                    NickName = "TestBot",
+                    Avatar = "https://test-bot-avatar.com",
+                    OrgId = "orgId",
+                    Created = DateTime.Parse("2018-12-17T22:26:10.283Z", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal),
+                    Status = "unknown",
+                    Type = "bot"
+                }
+            };
+        }
+
         public static IEnumerable<object[]> GetRoomTestData()
         {
             yield return new object[]
