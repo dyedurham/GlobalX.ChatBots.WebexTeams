@@ -12,8 +12,10 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
     public class WebexTeamsApiServiceTest
     {
         private string _messageId;
+        private string _roomId;
         private CreateMessageRequest _createMessageRequest;
         private Message _messageResponse;
+        private Room _roomResponse;
 
         private readonly WebexTeamsApiService _subject;
 
@@ -48,9 +50,25 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
                 .BDDfy();
         }
 
+        [Theory]
+        [MemberData(nameof(WebexTeamsApiServiceTestData.GetRoomTestData), MemberType = typeof(WebexTeamsApiServiceTestData))]
+        internal void TestGetPerson(string roomId, string httpResponse, Room response)
+        {
+            this.Given(x => GivenARoomId(roomId))
+                .When(x => WhenGettingARoom(httpResponse))
+                .Then(x => ThenItShouldCallTheHttpClientGet())
+                .And(x => ThenItShouldReturnTheRoom(response))
+                .BDDfy();
+        }
+
         private void GivenAMessageId(string messageId)
         {
             _messageId = messageId;
+        }
+
+        private void GivenARoomId(string roomId)
+        {
+            _roomId = roomId;
         }
 
         private void GivenACreateMessageRequest(CreateMessageRequest createMessageRequest)
@@ -62,6 +80,12 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
         {
             _httpClientProxy.GetAsync(Arg.Any<string>()).Returns(response);
             _messageResponse = await _subject.GetMessageAsync(_messageId);
+        }
+
+        private async void WhenGettingARoom(string response)
+        {
+            _httpClientProxy.GetAsync(Arg.Any<string>()).Returns(response);
+            _roomResponse = await _subject.GetRoomAsync(_roomId);
         }
 
         private async void WhenSendingAMessage(string response)
@@ -128,6 +152,22 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
                     }
                 },
                 () => _messageResponse.Created.ShouldBe(message.Created)
+            );
+        }
+
+        private void ThenItShouldReturnTheRoom(Room room)
+        {
+            _roomResponse.ShouldNotBeNull();
+            _roomResponse.ShouldSatisfyAllConditions(
+                () => _roomResponse.Id.ShouldBe(room.Id),
+                () => _roomResponse.Title.ShouldBe(room.Title),
+                () => _roomResponse.Type.ShouldBe(room.Type),
+                () => _roomResponse.IsLocked.ShouldBe(room.IsLocked),
+                () => _roomResponse.TeamId.ShouldBe(room.TeamId),
+                () => _roomResponse.LastActivity.ShouldBe(room.LastActivity),
+                () => _roomResponse.CreatorId.ShouldBe(room.CreatorId),
+                () => _roomResponse.Created.ShouldBe(room.Created),
+                () => _roomResponse.SipAddress.ShouldBe(room.SipAddress)
             );
         }
     }

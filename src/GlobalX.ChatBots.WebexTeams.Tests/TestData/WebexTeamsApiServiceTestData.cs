@@ -136,5 +136,36 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                 }
             };
         }
+
+        public static IEnumerable<object[]> GetRoomTestData()
+        {
+            yield return new object[]
+            {
+                "roomId",
+                @"{
+    ""id"": ""roomId"",
+    ""title"": ""Awesome Space"",
+    ""type"": ""group"",
+    ""isLocked"": false,
+    ""teamId"": ""teamId"",
+    ""lastActivity"": ""2019-07-08T22:55:52.357Z"",
+    ""creatorId"": ""creatorId"",
+    ""created"": ""2019-06-30T22:32:59.050Z"",
+    ""sipAddress"": ""sipAddress""
+}",
+                new Room
+                {
+                    Id = "roomId",
+                    Title = "Awesome Space",
+                    Type = "group",
+                    IsLocked = false,
+                    TeamId = "teamId",
+                    LastActivity = DateTime.Parse("2019-07-08T22:55:52.357Z", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal),
+                    CreatorId = "creatorId",
+                    Created = DateTime.Parse("2019-06-30T22:32:59.050Z", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal),
+                    SipAddress = "sipAddress"
+                }
+            };
+        }
     }
 }
