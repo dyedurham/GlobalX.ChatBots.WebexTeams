@@ -1,0 +1,17 @@
+using System;
+
+namespace GlobalX.ChatBots.WebexTeams.Models
+{
+    public class Room
+    {
+        public string Id { get; set; }
+        public string Title { get; set; }
+        public string Type { get; set; }
+        public bool IsLocked { get; set; }
+        public string TeamId { get; set; }
+        public string LastActivity { get; set; }
+        public string CreatorId { get; set; }
+        public DateTime Created { get; set; }
+        public string SipAddress { get; set; }
+    }
+}

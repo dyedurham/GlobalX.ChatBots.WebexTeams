@@ -21,7 +21,7 @@ namespace GlobalX.ChatBots.WebexTeams
 
             var messageHandler = new WebexTeamsMessageHandler(apiService, messageParser);
             var personHandler = new WebexTeamsPersonHandler(apiService, mapper);
-            var roomHandler = new WebexTeamsRoomHandler();
+            var roomHandler = new WebexTeamsRoomHandler(apiService, mapper);
 
             return new WebexTeamsChatHelper(messageHandler, personHandler, roomHandler);
         }

@@ -8,5 +8,6 @@ namespace GlobalX.ChatBots.WebexTeams.Services
         Task<Message> GetMessageAsync(string messageId);
         Task<Message> SendMessageAsync(CreateMessageRequest request);
         Task<Person> GetPersonAsync(string personId);
+        Task<Room> GetRoomAsync(string roomId);
     }
 }
