@@ -13,3 +13,6 @@ deploy:
   script: chmod +x ./deploy.sh && ./deploy.sh $VERSION $NUGET_API_KEY
   on:
     branch: master
+cover:
+  - dotnet test src/GlobalX.ChatBots.WebexTeams.Tests/GlobalX.ChatBots.WebexTeams.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat="opencover"
+  - bash < (curl -s https://codecov.io/bash) -f src/GlobalX.ChatBots.WebexTeams.Tests/coverage.opencover.xml
