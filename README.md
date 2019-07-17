@@ -12,7 +12,7 @@
     </a>
     <img src="https://flat.badgen.net/github/commits/globalx/globalx.chatbots.webexteams" alt="commits" />
     <img src="https://flat.badgen.net/github/contributors/globalx/globalx.chatbots.webexteams" alt="contributors" />
-    <img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg" alt="commitizen friendly" />
+    <img src="https://flat.badgen.net/badge/commitizen/friendly/green" alt="commitizen friendly" />
 </p>
 
 A .NET Core library containing implementations of core interfaces of
