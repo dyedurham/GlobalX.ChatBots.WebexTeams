@@ -19,6 +19,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
         private CreateMessageRequest _createMessageRequest;
         private WebexTeamsMessage _webexTeamsMessage;
         private GlobalXMessage _globalXMessage;
+        private Exception _exception;
 
         private WebexTeamsMessageParser _subject;
 
@@ -39,6 +40,19 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
             this.Given(x => GivenAWebexTeamsMessage(input))
                 .When(x => WhenParsingAMessage())
                 .Then(x => ThenItShouldReturnAGlobalXMessage(output))
+                .And(x => ThenItShouldNotThrowAnException())
+                .BDDfy();
+        }
+
+        [Theory]
+        [MemberData(nameof(WebexTeamsMessageParserTestData.UnsuccessfulParseMessageTestData), MemberType =
+            typeof(WebexTeamsMessageParserTestData))]
+        internal void TestUnsuccessfulParseMessage(WebexTeamsMessage input, Type exceptionType, string message)
+        {
+            this.Given(x => GivenAWebexTeamsMessage(input))
+                .When(x => WhenParsingAMessage())
+                .Then(x => ThenItShouldThrowAnExceptionOfType(exceptionType))
+                .And(x => ThenTheExceptionMessageShouldContain(message))
                 .BDDfy();
         }
 
@@ -49,6 +63,19 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
             this.Given(x => GivenAGlobalXMessage(input))
                 .When(x => WhenParsingACreateMessageRequest())
                 .Then(x => ThenItShouldReturnACreateMessageRequest(output))
+                .And(x => ThenItShouldNotThrowAnException())
+                .BDDfy();
+        }
+
+        [Theory]
+        [MemberData(nameof(WebexTeamsMessageParserTestData.UnsuccessfulParseCreateMessageRequestTestData), MemberType =
+            typeof(WebexTeamsMessageParserTestData))]
+        internal void TestUnsuccessfulParseCreateMessageRequest(GlobalXMessage input, Type exceptionType, string message)
+        {
+            this.Given(x => GivenAGlobalXMessage(input))
+                .When(x => WhenParsingACreateMessageRequest())
+                .Then(x => ThenItShouldThrowAnExceptionOfType(exceptionType))
+                .And(x => ThenTheExceptionMessageShouldContain(message))
                 .BDDfy();
         }
 
@@ -64,12 +91,26 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
 
         private void WhenParsingAMessage()
         {
-            _globalXMessage = _subject.ParseMessage(_webexTeamsMessage);
+            try
+            {
+                _globalXMessage = _subject.ParseMessage(_webexTeamsMessage);
+            }
+            catch (Exception e)
+            {
+                _exception = e;
+            }
         }
 
         private void WhenParsingACreateMessageRequest()
         {
-            _createMessageRequest = _subject.ParseCreateMessageRequest(_globalXMessage);
+            try
+            {
+                _createMessageRequest = _subject.ParseCreateMessageRequest(_globalXMessage);
+            }
+            catch (Exception e)
+            {
+                _exception = e;
+            }
         }
 
         private void ThenItShouldReturnAGlobalXMessage(GlobalXMessage message)
@@ -123,6 +164,22 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
                     }
                 }
             );
+        }
+
+        private void ThenItShouldNotThrowAnException()
+        {
+            _exception.ShouldBeNull();
+        }
+
+        private void ThenItShouldThrowAnExceptionOfType(Type exceptionType)
+        {
+            _exception.ShouldNotBeNull();
+            _exception.ShouldBeOfType(exceptionType);
+        }
+
+        private void ThenTheExceptionMessageShouldContain(string message)
+        {
+            _exception.Message.ShouldContain(message);
         }
     }
 }

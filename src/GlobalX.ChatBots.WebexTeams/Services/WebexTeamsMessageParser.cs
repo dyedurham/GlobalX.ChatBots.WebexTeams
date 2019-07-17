@@ -59,8 +59,17 @@ namespace GlobalX.ChatBots.WebexTeams.Services
         public CreateMessageRequest ParseCreateMessageRequest(GlobalXMessage message)
         {
             var request = new CreateMessageRequest();
-            var roomBytes = Convert.FromBase64String(message.RoomId);
-            var roomDecoded = Encoding.UTF8.GetString(roomBytes);
+            string roomDecoded;
+
+            try
+            {
+                var roomBytes = Convert.FromBase64String(message.RoomId);
+                roomDecoded = Encoding.UTF8.GetString(roomBytes);
+            }
+            catch (FormatException)
+            {
+                throw new ArgumentException($"Invalid room ID {message.RoomId}");
+            }
 
             if (roomDecoded.StartsWith(RoomIdPrefix))
             {
