@@ -6,5 +6,6 @@ namespace GlobalX.ChatBots.WebexTeams.Services
     {
         Task<string> GetAsync(string path, string body = null);
         Task<string> PostAsync(string path, string body = null);
+        Task DeleteAsync(string path);
     }
 }

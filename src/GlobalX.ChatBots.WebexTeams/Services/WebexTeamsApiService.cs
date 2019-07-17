@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using GlobalX.ChatBots.WebexTeams.Models;
+using Newtonsoft.Json;
 
 namespace GlobalX.ChatBots.WebexTeams.Services
 {
@@ -40,6 +40,26 @@ namespace GlobalX.ChatBots.WebexTeams.Services
             var result = await _httpClientProxy.GetAsync($"/rooms/{roomId}").ConfigureAwait(false);
             var room = JsonConvert.DeserializeObject<Room>(result);
             return room;
+        }
+
+        public async Task<Webhook[]> GetWebhooksAsync()
+        {
+            var result = await _httpClientProxy.GetAsync("/webhooks").ConfigureAwait(false);
+            var response = JsonConvert.DeserializeObject<WebhookListResponse>(result);
+            return response.Items;
+        }
+
+        public async Task<Webhook> CreateWebhookAsync(CreateWebhookRequest request)
+        {
+            var json = JsonConvert.SerializeObject(request);
+            var result = await _httpClientProxy.PostAsync("/webhooks", json).ConfigureAwait(false);
+            var webhook = JsonConvert.DeserializeObject<Webhook>(result);
+            return webhook;
+        }
+
+        public async Task DeleteWebhookAsync(string webhookId)
+        {
+            await _httpClientProxy.DeleteAsync($"/webhooks/{webhookId}");
         }
     }
 }

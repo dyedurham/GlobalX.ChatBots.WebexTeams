@@ -48,5 +48,17 @@ namespace GlobalX.ChatBots.WebexTeams.Services
             var responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             return responseBody;
         }
+
+        public async Task DeleteAsync(string path)
+        {
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri($"{BaseUrl}{path}")
+            };
+
+            var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
+            response.EnsureSuccessStatusCode();
+        }
     }
 }

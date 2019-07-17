@@ -236,5 +236,135 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                 }
             };
         }
+
+        public static IEnumerable<object[]> GetWebhooksTestData()
+        {
+            yield return new object[]
+            {
+                @"{
+    ""items"": [
+        {
+            ""id"": ""webhookId"",
+            ""name"": ""TestBot webhook"",
+            ""targetUrl"": ""https://test-bot.test.com/bots/test/respond"",
+            ""resource"": ""messages"",
+            ""event"": ""created"",
+            ""filter"": ""mentionedPeople=testBotId"",
+            ""orgId"": ""orgId"",
+            ""createdBy"": ""testBotId"",
+            ""appId"": ""appId"",
+            ""ownedBy"": ""creator"",
+            ""status"": ""active"",
+            ""created"": ""2019-07-15T00:59:51.361Z""
+        },
+        {
+            ""id"": ""directWebhookId"",
+            ""name"": ""TestBot direct webhook"",
+            ""targetUrl"": ""https://test-bot.test.com/bots/test/pm"",
+            ""resource"": ""messages"",
+            ""event"": ""created"",
+            ""filter"": ""roomType=direct"",
+            ""orgId"": ""orgId"",
+            ""createdBy"": ""testBotId"",
+            ""appId"": ""appId"",
+            ""ownedBy"": ""creator"",
+            ""status"": ""active"",
+            ""secret"": ""secret"",
+            ""created"": ""2019-07-15T00:59:51.425Z""
+        }
+    ]
+}",
+                new []
+                {
+                    new Webhook
+                    {
+                        Id = "webhookId",
+                        Name = "TestBot webhook",
+                        TargetUrl = "https://test-bot.test.com/bots/test/respond",
+                        Resource = "messages",
+                        Event = "created",
+                        Filter = "mentionedPeople=testBotId",
+                        OrgId = "orgId",
+                        CreatedBy = "testBotId",
+                        AppId = "appId",
+                        OwnedBy = "creator",
+                        Status = "active",
+                        Created = DateTime.Parse("2019-07-15T00:59:51.361Z", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal)
+                    },
+                    new Webhook
+                    {
+                        Id = "directWebhookId",
+                        Name = "TestBot direct webhook",
+                        TargetUrl = "https://test-bot.test.com/bots/test/pm",
+                        Resource = "messages",
+                        Event = "created",
+                        Filter = "roomType=direct",
+                        OrgId = "orgId",
+                        CreatedBy = "testBotId",
+                        AppId = "appId",
+                        OwnedBy = "creator",
+                        Status = "active",
+                        Secret = "secret",
+                        Created = DateTime.Parse("2019-07-15T00:59:51.425Z", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal)
+                    }
+                }
+            };
+        }
+
+        public static IEnumerable<object[]> CreateWebhookTestData()
+        {
+            yield return new object[]
+            {
+                new CreateWebhookRequest
+                {
+                    Name = "TestBot webhook",
+                    TargetUrl = "https://test-bot.test.com/bots/test/respond",
+                    Resource = "messages",
+                    Event = "created",
+                    Filter = "mentionedPeople=me",
+                    Secret = "secret"
+                },
+                @"{
+    ""id"": ""webhookId"",
+    ""name"": ""TestBot webhook"",
+    ""targetUrl"": ""https://test-bot.test.com/bots/test/respond"",
+    ""resource"": ""messages"",
+    ""event"": ""created"",
+    ""filter"": ""mentionedPeople=testBotId"",
+    ""orgId"": ""orgId"",
+    ""createdBy"": ""testBotId"",
+    ""appId"": ""appId"",
+    ""ownedBy"": ""creator"",
+    ""status"": ""active"",
+    ""secret"": ""secret"",
+    ""created"": ""2019-07-15T00:59:51.361Z""
+}",
+                new Webhook
+                {
+                    Id = "webhookId",
+                    Name = "TestBot webhook",
+                    TargetUrl = "https://test-bot.test.com/bots/test/respond",
+                    Resource = "messages",
+                    Event = "created",
+                    Filter = "mentionedPeople=testBotId",
+                    OrgId = "orgId",
+                    CreatedBy = "testBotId",
+                    AppId = "appId",
+                    OwnedBy = "creator",
+                    Status = "active",
+                    Secret = "secret",
+                    Created = DateTime.Parse("2019-07-15T00:59:51.361Z", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal)
+                }
+            };
+        }
+
+        public static IEnumerable<object[]> DeleteWebhookTestData()
+        {
+            return new List<object[]>
+            {
+                new object[] { "webhookId" },
+                new object[] { "anotherId" }
+            };
+        }
     }
 }

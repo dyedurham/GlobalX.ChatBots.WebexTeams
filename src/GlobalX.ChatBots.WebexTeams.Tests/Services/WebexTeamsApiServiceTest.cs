@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using GlobalX.ChatBots.WebexTeams.Models;
 using GlobalX.ChatBots.WebexTeams.Services;
 using GlobalX.ChatBots.WebexTeams.Tests.TestData;
@@ -14,10 +15,14 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
         private string _messageId;
         private string _personId;
         private string _roomId;
+        private string _webhookId;
         private CreateMessageRequest _createMessageRequest;
         private Message _messageResponse;
         private Person _personResponse;
         private Room _roomResponse;
+        private Webhook[] _webhooksResponse;
+        private CreateWebhookRequest _createWebhookRequest;
+        private Webhook _webhookResponse;
 
         private readonly WebexTeamsApiService _subject;
 
@@ -74,6 +79,38 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
                 .BDDfy();
         }
 
+        [Theory]
+        [MemberData(nameof(WebexTeamsApiServiceTestData.GetWebhooksTestData), MemberType = typeof(WebexTeamsApiServiceTestData))]
+        internal void TestGetWebhooks(string httpResponse, Webhook[] response)
+        {
+            this.Given(x => GivenAGetWebhooksRequest())
+                .When(x => WhenGettingWebhooks(httpResponse))
+                .Then(x => ThenItShouldCallTheHttpClientGet())
+                .And(x => ThenItShouldReturnTheWebhooks(response))
+                .BDDfy();
+        }
+
+        [Theory]
+        [MemberData(nameof(WebexTeamsApiServiceTestData.CreateWebhookTestData), MemberType = typeof(WebexTeamsApiServiceTestData))]
+        internal void TestCreateWebhook(CreateWebhookRequest request, string httpResponse, Webhook response)
+        {
+            this.Given(x => GivenACreateWebhookRequest(request))
+                .When(x => WhenCreatingAWebhook(httpResponse))
+                .Then(x => ThenItShouldCallTheHttpClientPost())
+                .And(x => ThenItShouldReturnTheWebhook(response))
+                .BDDfy();
+        }
+
+        [Theory]
+        [MemberData(nameof(WebexTeamsApiServiceTestData.DeleteWebhookTestData), MemberType = typeof(WebexTeamsApiServiceTestData))]
+        internal void TestDeleteWebhook(string webhookId)
+        {
+            this.Given(x => GivenAWebhookId(webhookId))
+                .When(x => WhenDeletingAWebhook())
+                .Then(x => ThenItShouldCallTheHttpClientDelete())
+                .BDDfy();
+        }
+
         private void GivenAMessageId(string messageId)
         {
             _messageId = messageId;
@@ -94,28 +131,57 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
             _roomId = roomId;
         }
 
+        private void GivenAGetWebhooksRequest() { }
+
+        private void GivenACreateWebhookRequest(CreateWebhookRequest createWebhookRequest)
+        {
+            _createWebhookRequest = createWebhookRequest;
+        }
+
+        private void GivenAWebhookId(string webhookId)
+        {
+            _webhookId = webhookId;
+        }
+
         private async void WhenGettingAMessage(string response)
         {
-            _httpClientProxy.GetAsync(Arg.Any<string>()).Returns(response);
+            _httpClientProxy.GetAsync(Arg.Any<string>()).Returns(Task.FromResult(response));
             _messageResponse = await _subject.GetMessageAsync(_messageId);
         }
 
         private async void WhenSendingAMessage(string response)
         {
-            _httpClientProxy.PostAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(response);
+            _httpClientProxy.PostAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Task.FromResult(response));
             _messageResponse = await _subject.SendMessageAsync(_createMessageRequest);
         }
 
         private async void WhenGettingAPerson(string response)
         {
-            _httpClientProxy.GetAsync(Arg.Any<string>()).Returns(response);
+            _httpClientProxy.GetAsync(Arg.Any<string>()).Returns(Task.FromResult(response));
             _personResponse = await _subject.GetPersonAsync(_personId);
         }
 
         private async void WhenGettingARoom(string response)
         {
-            _httpClientProxy.GetAsync(Arg.Any<string>()).Returns(response);
+            _httpClientProxy.GetAsync(Arg.Any<string>()).Returns(Task.FromResult(response));
             _roomResponse = await _subject.GetRoomAsync(_roomId);
+        }
+
+        private async void WhenGettingWebhooks(string response)
+        {
+            _httpClientProxy.GetAsync(Arg.Any<string>()).Returns(Task.FromResult(response));
+            _webhooksResponse = await _subject.GetWebhooksAsync();
+        }
+
+        private async void WhenCreatingAWebhook(string response)
+        {
+            _httpClientProxy.PostAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Task.FromResult(response));
+            _webhookResponse = await _subject.CreateWebhookAsync(_createWebhookRequest);
+        }
+
+        private async void WhenDeletingAWebhook()
+        {
+            await _subject.DeleteWebhookAsync(_webhookId);
         }
 
         private void ThenItShouldCallTheHttpClientGet()
@@ -126,6 +192,11 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
         private void ThenItShouldCallTheHttpClientPost()
         {
             _httpClientProxy.ReceivedWithAnyArgs(1).PostAsync(Arg.Any<string>(), Arg.Any<string>());
+        }
+
+        private void ThenItShouldCallTheHttpClientDelete()
+        {
+            _httpClientProxy.ReceivedWithAnyArgs(1).DeleteAsync(Arg.Any<string>());
         }
 
         private void ThenItShouldReturnTheMessage(Message message)
@@ -265,6 +336,44 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
                 () => _personResponse.InvitePending.ShouldBe(person.InvitePending),
                 () => _personResponse.LoginEnabled.ShouldBe(person.LoginEnabled),
                 () => _personResponse.Type.ShouldBe(person.Type)
+            );
+        }
+
+        private void ThenItShouldReturnTheWebhooks(Webhook[] webhooks)
+        {
+            _webhooksResponse.ShouldNotBeNull();
+            _webhooksResponse.Length.ShouldBe(webhooks.Length);
+            _webhooksResponse = _webhooksResponse.OrderBy(x => x.Id).ToArray();
+            webhooks = webhooks.OrderBy(x => x.Id).ToArray();
+
+            for (int i = 0; i < webhooks.Length; i++)
+            {
+                TheWebhooksShouldBeEqual(_webhooksResponse[i], webhooks[i]);
+            }
+        }
+
+        private void ThenItShouldReturnTheWebhook(Webhook webhook)
+        {
+            TheWebhooksShouldBeEqual(_webhookResponse, webhook);
+        }
+
+        private void TheWebhooksShouldBeEqual(Webhook expected, Webhook actual)
+        {
+            expected.ShouldNotBeNull();
+            expected.ShouldSatisfyAllConditions(
+                () => expected.Id.ShouldBe(actual.Id),
+                () => expected.Name.ShouldBe(actual.Name),
+                () => expected.TargetUrl.ShouldBe(actual.TargetUrl),
+                () => expected.Resource.ShouldBe(actual.Resource),
+                () => expected.Event.ShouldBe(actual.Event),
+                () => expected.Filter.ShouldBe(actual.Filter),
+                () => expected.OrgId.ShouldBe(actual.OrgId),
+                () => expected.CreatedBy.ShouldBe(actual.CreatedBy),
+                () => expected.AppId.ShouldBe(actual.AppId),
+                () => expected.OwnedBy.ShouldBe(actual.OwnedBy),
+                () => expected.Status.ShouldBe(actual.Status),
+                () => expected.Secret.ShouldBe(actual.Secret),
+                () => expected.Created.ShouldBe(actual.Created)
             );
         }
     }
