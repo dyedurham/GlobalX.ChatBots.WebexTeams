@@ -23,7 +23,20 @@ Webex Teams.
 
 ### Configuration
 
-TODO
+In order to use this bot, some configuration is required. This can either be done
+through appsettings.json, or at the time of configuring the bot.
+
+#### Example Configuration
+
+```json
+// In appsettings.json
+{
+    "GlobalX.ChatBots.WebexTeams": {
+        "WebexTeamsApiUrl": "https://api.ciscospark.com/v1",
+        "BotAuthToken": "token"
+    }
+}
+```
 
 ### Using Dependency Injection
 
@@ -40,6 +53,26 @@ public IServiceProvider ConfigureServices(IServiceCollection services)
 }
 ```
 
+If you have not provided your configuration inside appsettings.json, you may do so
+when you configure the bot:
+
+```cs
+using GlobalX.ChatBots.WebexTeams;
+using GlobalX.ChatBots.WebexTeams.Configuration;
+
+public IServiceProvider ConfigureServices(IServiceCollection services)
+{
+    // Add other service registrations here
+    var settings = new WebexTeamsSettings
+    {
+        WebexTeamsApiUrl = "https://api.ciscospark.com/v1",
+        BotAuthToken = "token"
+    };
+
+    services.ConfigureWebexTeamsBot(settings);
+}
+```
+
 ### Without Dependency Injection
 
 You can get a webex teams implementation of the library by calling the
@@ -48,8 +81,15 @@ You can get a webex teams implementation of the library by calling the
 ```cs
 using GlobalX.ChatBots.Core;
 using GlobalX.ChatBots.WebexTeams;
+using GlobalX.ChatBots.WebexTeams.Configuration;
 
 // Some code here
 
-IChatHelper webexTeamsChatHelper = WebexTeamsChatHelperFactory.CreateWebexTeamsChatHelper();
+var settings = new WebexTeamsSettings
+{
+    WebexTeamsApiUrl = "https://api.ciscospark.com/v1",
+    BotAuthToken = "token"
+};
+
+IChatHelper webexTeamsChatHelper = WebexTeamsChatHelperFactory.CreateWebexTeamsChatHelper(settings);
 ```
