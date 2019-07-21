@@ -18,7 +18,7 @@ namespace GlobalX.ChatBots.WebexTeams.Mappers.Converters
                 case Group:
                     return RoomType.Group;
                 default:
-                    throw new ArgumentException($"Unknown enum value {source}", "source");
+                    throw new ArgumentException($"Unknown enum value {source}", nameof(source));
             }
         }
     }

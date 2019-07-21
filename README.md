@@ -33,7 +33,16 @@ through appsettings.json, or at the time of configuring the bot.
 {
     "GlobalX.ChatBots.WebexTeams": {
         "WebexTeamsApiUrl": "https://api.ciscospark.com/v1",
-        "BotAuthToken": "token"
+        "BotAuthToken": "token",
+        "Webhooks": [
+            {
+                "Name": "name",
+                "TargetUrl": "https://fake-url.com",
+                "Resource": "Messages",
+                "Event": "Created",
+                "Filter": "mentionedPeople=me"
+            }
+        ]
     }
 }
 ```
@@ -66,7 +75,18 @@ public IServiceProvider ConfigureServices(IServiceCollection services)
     var settings = new WebexTeamsSettings
     {
         WebexTeamsApiUrl = "https://api.ciscospark.com/v1",
-        BotAuthToken = "token"
+        BotAuthToken = "token",
+        Webhooks = new[]
+        {
+            new Webhook
+            {
+                Name = "name",
+                TargetUrl = "https://fake-url.com",
+                Resource = ResourceType.Messages,
+                Event = EventType.Created,
+                Filter = "mentionedPeople=me"
+            }
+        }
     };
 
     services.ConfigureWebexTeamsBot(settings);

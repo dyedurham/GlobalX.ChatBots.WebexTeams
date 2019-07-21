@@ -13,6 +13,7 @@ namespace GlobalX.ChatBots.WebexTeams.Mappers
                 c.AddProfile<MessageMapper>();
                 c.AddProfile<PersonMapper>();
                 c.AddProfile<RoomMapper>();
+                c.AddProfile<WebhookMapper>();
             });
 
             config.AssertConfigurationIsValid();
