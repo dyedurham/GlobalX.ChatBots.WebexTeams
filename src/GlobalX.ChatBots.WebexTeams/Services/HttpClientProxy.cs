@@ -11,14 +11,14 @@ namespace GlobalX.ChatBots.WebexTeams.Services
     internal class HttpClientProxy : IHttpClientProxy
     {
         private readonly HttpClient _httpClient;
-        private readonly IOptions<WebexTeamsSettings> _settings;
+        private readonly WebexTeamsSettings _settings;
 
         public HttpClientProxy(HttpClient httpClient, IOptions<WebexTeamsSettings> settings)
         {
             _httpClient = httpClient;
-            _settings = settings;
+            _settings = settings.Value;
 
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _settings.Value.BotAuthToken);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _settings.BotAuthToken);
         }
 
         public async Task<string> GetAsync(string path, string body = null)
@@ -26,7 +26,7 @@ namespace GlobalX.ChatBots.WebexTeams.Services
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{_settings.Value.WebexTeamsApiUrl}{path}"),
+                RequestUri = new Uri($"{_settings.WebexTeamsApiUrl}{path}"),
                 Content = body != null ? new StringContent(body, Encoding.UTF8, "application/json") : null
             };
             var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
@@ -41,7 +41,7 @@ namespace GlobalX.ChatBots.WebexTeams.Services
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri($"{_settings.Value.WebexTeamsApiUrl}{path}"),
+                RequestUri = new Uri($"{_settings.WebexTeamsApiUrl}{path}"),
                 Content = body != null ? new StringContent(body, Encoding.UTF8, "application/json") : null
             };
             var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
@@ -56,7 +56,7 @@ namespace GlobalX.ChatBots.WebexTeams.Services
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
-                RequestUri = new Uri($"{_settings.Value.WebexTeamsApiUrl}{path}")
+                RequestUri = new Uri($"{_settings.WebexTeamsApiUrl}{path}")
             };
 
             var response = await _httpClient.SendAsync(request).ConfigureAwait(false);

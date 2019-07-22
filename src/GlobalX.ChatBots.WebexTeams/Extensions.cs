@@ -38,6 +38,7 @@ namespace GlobalX.ChatBots.WebexTeams
             services.AddScoped<IPersonHandler, WebexTeamsPersonHandler>();
             services.AddScoped<IRoomHandler, WebexTeamsRoomHandler>();
             services.AddScoped<IWebexTeamsMessageParser, WebexTeamsMessageParser>();
+            services.AddScoped<IWebhookService, WebhookService>();
             services.AddSingleton(WebexTeamsMapperFactory.CreateMapper());
             return services;
         }
