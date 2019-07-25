@@ -16,6 +16,7 @@ namespace GlobalX.ChatBots.WebexTeams.Services
         {
             _apiService = apiService;
             _settings = settings.Value;
+            _mapper = mapper;
         }
 
         public async Task RegisterWebhooks()
