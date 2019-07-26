@@ -28,7 +28,6 @@ it using npm:
 
 ```bash
 npm install -g commitizen
-npm install -g cz-conventional-changelog
 ```
 
 Then you can commit using:
