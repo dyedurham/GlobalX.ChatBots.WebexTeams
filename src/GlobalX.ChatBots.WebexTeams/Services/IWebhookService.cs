@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 
 namespace GlobalX.ChatBots.WebexTeams.Services
 {
-    internal interface IWebhookService
+    public interface IWebhookService
     {
         Task RegisterWebhooks();
     }

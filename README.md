@@ -93,6 +93,16 @@ public IServiceProvider ConfigureServices(IServiceCollection services)
 }
 ```
 
+To start the webhooks, put the following in your `Configure` method.
+
+```cs
+public void Configure (IApplicationBuilder app, IHostingEnvironment env)
+{
+    // other configuration code here
+    app.ApplicationServices.GetService<IWebhookHelper>().RegisterWebhooks();
+}
+```
+
 ### Without Dependency Injection
 
 You can get a webex teams implementation of the library by calling the
@@ -111,5 +121,6 @@ var settings = new WebexTeamsSettings
     BotAuthToken = "token"
 };
 
-IChatHelper webexTeamsChatHelper = WebexTeamsChatHelperFactory.CreateWebexTeamsChatHelper(settings);
+WebexTeamsChatHelper webexTeamsChatHelper = WebexTeamsChatHelperFactory.CreateWebexTeamsChatHelper(settings);
+webexTeamsChatHelper.RegisterWebhooks();
 ```

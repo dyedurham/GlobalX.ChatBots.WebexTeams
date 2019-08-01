@@ -1,6 +1,5 @@
 using System;
 using System.Net.Http;
-using GlobalX.ChatBots.Core;
 using GlobalX.ChatBots.WebexTeams.Configuration;
 using GlobalX.ChatBots.WebexTeams.Mappers;
 using GlobalX.ChatBots.WebexTeams.Services;
@@ -10,7 +9,7 @@ namespace GlobalX.ChatBots.WebexTeams
 {
     public class WebexTeamsChatHelperFactory
     {
-        public IChatHelper CreateWebexTeamsChatHelper(WebexTeamsSettings settings)
+        public WebexTeamsChatHelper CreateWebexTeamsChatHelper(WebexTeamsSettings settings)
         {
             var httpClient = new HttpClient{
                 BaseAddress = new Uri("https://api.ciscospark.com/v1")
@@ -25,7 +24,9 @@ namespace GlobalX.ChatBots.WebexTeams
             var personHandler = new WebexTeamsPersonHandler(apiService, mapper);
             var roomHandler = new WebexTeamsRoomHandler(apiService, mapper);
 
-            return new WebexTeamsChatHelper(messageHandler, personHandler, roomHandler);
+            var webhooks = new WebhookService(apiService, new OptionsWrapper<WebexTeamsSettings>(settings), mapper);
+
+            return new WebexTeamsChatHelper(messageHandler, personHandler, roomHandler, webhooks);
         }
     }
 }
