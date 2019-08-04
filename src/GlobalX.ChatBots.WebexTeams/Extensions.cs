@@ -34,6 +34,7 @@ namespace GlobalX.ChatBots.WebexTeams
             services.AddHttpClient<IHttpClientProxy, HttpClientProxy>();
             services.AddScoped<IWebexTeamsApiService, WebexTeamsApiService>();
             services.AddScoped<IChatHelper, WebexTeamsChatHelper>();
+            services.AddScoped<IWebhookHelper, WebexTeamsChatHelper>();
             services.AddScoped<IMessageHandler, WebexTeamsMessageHandler>();
             services.AddScoped<IPersonHandler, WebexTeamsPersonHandler>();
             services.AddScoped<IRoomHandler, WebexTeamsRoomHandler>();

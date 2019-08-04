@@ -57,7 +57,7 @@ using GlobalX.ChatBots.WebexTeams;
 public IServiceProvider ConfigureServices(IServiceCollection services)
 {
     // Add other service registrations here
-    services.ConfigureWebexTeamsBot();
+    services.ConfigureWebexTeamsBot(Configuration);
     return services;
 }
 ```
