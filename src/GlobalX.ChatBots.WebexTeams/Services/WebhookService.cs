@@ -28,6 +28,11 @@ namespace GlobalX.ChatBots.WebexTeams.Services
                 await _apiService.DeleteWebhookAsync(hook.Id);
             }
 
+            if (_settings.Webhooks == null)
+            {
+                return;
+            }
+
             foreach (var newHook in _settings.Webhooks)
             {
                 var mappedHook = _mapper.Map<CreateWebhookRequest>(newHook);
