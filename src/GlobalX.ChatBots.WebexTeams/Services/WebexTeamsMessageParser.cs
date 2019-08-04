@@ -63,7 +63,13 @@ namespace GlobalX.ChatBots.WebexTeams.Services
 
             try
             {
-                var roomBytes = Convert.FromBase64String(message.RoomId);
+                var base64String = message.RoomId;
+                if (base64String.Length % 4 != 0)
+                {
+                    var amountToPad = 4 - base64String.Length % 4;
+                    base64String = base64String.PadRight(base64String.Length + amountToPad, '=');
+                }
+                var roomBytes = Convert.FromBase64String(base64String);
                 roomDecoded = Encoding.UTF8.GetString(roomBytes);
             }
             catch (FormatException)
