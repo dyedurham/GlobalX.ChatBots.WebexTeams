@@ -6,7 +6,7 @@ using GlobalX.ChatBots.WebexTeams.Models;
 
 namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
 {
-    public class WebhookServiceTestData
+    public class WebexTeamsWebhookHandlerTestData
     {
         public static IEnumerable<object[]> SuccessfulRegisterHooksTestData()
         {

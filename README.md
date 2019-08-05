@@ -99,7 +99,7 @@ To start the webhooks, put the following in your `Configure` method.
 public void Configure (IApplicationBuilder app, IHostingEnvironment env)
 {
     // other configuration code here
-    app.ApplicationServices.GetService<IWebhookHelper>().RegisterWebhooks();
+    app.ApplicationServices.GetService<IWebhookHelper>().Webhooks.RegisterWebhooksAsync();
 }
 ```
 
@@ -122,5 +122,5 @@ var settings = new WebexTeamsSettings
 };
 
 WebexTeamsChatHelper webexTeamsChatHelper = WebexTeamsChatHelperFactory.CreateWebexTeamsChatHelper(settings);
-webexTeamsChatHelper.RegisterWebhooks();
+webexTeamsChatHelper.Webhooks.RegisterWebhooksAsync();
 ```

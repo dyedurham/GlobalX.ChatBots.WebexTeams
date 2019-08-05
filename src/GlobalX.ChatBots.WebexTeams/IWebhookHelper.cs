@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+using GlobalX.ChatBots.Core.Messages;
 
 namespace GlobalX.ChatBots.WebexTeams
 {
     public interface IWebhookHelper
     {
-        void RegisterWebhooks();
+        IWebexTeamsWebhookHandler Webhooks { get; set; }
     }
 }

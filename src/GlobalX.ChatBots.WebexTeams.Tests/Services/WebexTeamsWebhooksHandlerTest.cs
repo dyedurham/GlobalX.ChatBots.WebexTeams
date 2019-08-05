@@ -13,30 +13,32 @@ using Xunit;
 
 namespace GlobalX.ChatBots.WebexTeams.Tests.Services
 {
-    public class WebhookServiceTest
+    public class WebexTeamsWebhooksHandlerTest
     {
         // mocks
         private readonly IWebexTeamsApiService _apiService;
         private readonly WebexTeamsSettings _settings;
+        private readonly IWebexTeamsMessageParser _messageParser;
 
         // subject
-        private readonly WebhookService _subject;
+        private readonly WebexTeamsWebhookHandler _subject;
 
-        public WebhookServiceTest()
+        public WebexTeamsWebhooksHandlerTest()
         {
             _apiService = Substitute.For<IWebexTeamsApiService>();
             _settings = new WebexTeamsSettings();
+            _messageParser = Substitute.For<IWebexTeamsMessageParser>();
             var options = Substitute.For<IOptions<WebexTeamsSettings>>();
             options.Value.Returns(_settings);
             var mapper = new MapperConfiguration(c =>
             {
                 c.AddProfile<WebhookMapper>();
             }).CreateMapper();
-            _subject = new WebhookService(_apiService, options, new WebexTeamsMapper(mapper));
+            _subject = new WebexTeamsWebhookHandler(_apiService, options, new WebexTeamsMapper(mapper), _messageParser);
         }
 
         [Theory]
-        [MemberData(nameof(WebhookServiceTestData.SuccessfulRegisterHooksTestData), MemberType = typeof(WebhookServiceTestData))]
+        [MemberData(nameof(WebexTeamsWebhookHandlerTestData.SuccessfulRegisterHooksTestData), MemberType = typeof(WebexTeamsWebhookHandlerTestData))]
         internal void TestSuccessfullyRegisterHooks(WebexTeamsSettings settings, Models.Webhook[] existingHooks, CreateWebhookRequest[] mappedHooks)
         {
             this.Given(x => GivenWebexTeamsSettings(settings))
@@ -61,7 +63,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
 
         private async void WhenRegisteringWebhooks()
         {
-            await _subject.RegisterWebhooks();
+            await _subject.RegisterWebhooksAsync();
         }
 
         private void ThenItShouldDeleteExistingWebhooks(Models.Webhook[] existingHooks)
