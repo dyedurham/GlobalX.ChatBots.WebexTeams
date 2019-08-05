@@ -1,5 +1,20 @@
-VERSION=$1
-NUGET_API_KEY=$2
+NUGET_API_KEY=$1
 
-dotnet pack src/GlobalX.ChatBots.WebexTeams/GlobalX.ChatBots.WebexTeams.csproj -p:PackageVersion=$VERSION -o ../../
-dotnet nuget push GlobalX.ChatBots.WebexTeams.$VERSION.nupkg -k $NUGET_API_KEY -s nuget.org
+# Dry run semantic-release to get next version number
+VERSION="$(npx -p semantic-release@15.13.19 -p @semantic-release/changelog@3.0.4 -p @semantic-release/git@7.0.16 \
+-p @semantic-release/exec@3.3.5 -p @semantic-release/github@5.4.2 semantic-release --dry-run | \
+grep "next release version is" | sed -n "s/^.*next release version is\s*\(\S*\).*$/\1/p")"
+
+if [ -z "$VERSION" ]
+then
+	echo "There are no relevant changes, skipping release"
+	exit
+fi
+
+echo "The next release number is $VERSION"
+
+mkdir -p ./artifacts
+dotnet pack src/GlobalX.ChatBots.WebexTeams/GlobalX.ChatBots.WebexTeams.csproj -p:PackageVersion=$VERSION -o ../../artifacts
+
+npx -p semantic-release@15.13.19 -p @semantic-release/changelog@3.0.4 -p @semantic-release/git@7.0.16 \
+-p @semantic-release/exec@3.3.5 -p @semantic-release/github@5.4.2 semantic-release
