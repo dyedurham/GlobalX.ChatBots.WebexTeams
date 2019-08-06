@@ -334,6 +334,22 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                     Markdown = "test"
                 }
             };
+
+            // ID not padded to multiple of 4 characters
+            yield return new object[]
+            {
+                new GlobalXMessage
+                {
+                    Text = "test",
+                    RoomId = "Y2lzY29zcGFyazovL3VzL1BFT1BMRS9wZXJzb25JZA",
+                    RoomType = RoomType.Direct
+                },
+                new CreateMessageRequest
+                {
+                    ToPersonId = "Y2lzY29zcGFyazovL3VzL1BFT1BMRS9wZXJzb25JZA",
+                    Markdown = "test"
+                }
+            };
         }
 
         public static IEnumerable<object[]> UnsuccessfulParseCreateMessageRequestTestData()

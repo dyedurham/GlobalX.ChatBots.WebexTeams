@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using GlobalX.ChatBots.Core.Messages;
+using GlobalX.ChatBots.Core.Rooms;
 using GlobalX.ChatBots.WebexTeams.Configuration;
 using GlobalX.ChatBots.WebexTeams.Models;
+using GlobalXMessage = GlobalX.ChatBots.Core.Messages.Message;
+using WebexTeamsMessage = GlobalX.ChatBots.WebexTeams.Models.Message;
 
 namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
 {
@@ -103,6 +107,101 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                         Event = "updated",
                         Filter = "blah"
                     }
+                }
+            };
+        }
+
+        public static IEnumerable<object[]> SuccessfulProcessMessageWebhookCallbackTestData()
+        {
+            yield return new object[]
+            {
+                @"{
+	""data"": {
+		""id"": ""messageId""
+	}
+}",
+                "messageId",
+                new WebexTeamsMessage
+                {
+                    Id = "messageId",
+                    RoomId = "roomId",
+                    RoomType = "group",
+                    Text = "TestBot All test things",
+                    PersonId = "senderId",
+                    PersonEmail = "sender.email@test.com",
+                    Html = "<p><spark-mention data-object-type=\"person\" data-object-id=\"testBotId\">TestBot</spark-mention> <spark-mention data-object-type=\"groupMention\" data-group-type=\"all\">All</spark-mention> test things</p>",
+                    MentionedPeople = new[]{ "testBotId" },
+                    MentionedGroups = new []{ "all" },
+                    Created = new DateTime(2019, 7, 8, 22, 55, 52)
+                },
+                new GlobalXMessage
+                {
+                    Created = new DateTime(2019, 7, 8, 22, 55, 52),
+                    Text = "TestBot All test things",
+                    MessageParts = new[]
+                    {
+                        new MessagePart
+                        {
+                            MessageType = MessageType.PersonMention,
+                            Text = "TestBot",
+                            UserId = "testBotId"
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = " "
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.GroupMention,
+                            Text = "All",
+                            UserId = "all"
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = " test things",
+                        }
+                    },
+                    SenderId = "senderId",
+                    RoomId = "roomId",
+                    RoomType = RoomType.Group
+                }
+            };
+
+            yield return new object[]
+            {
+                @"{
+	""data"": {
+		""id"": ""directMessageId""
+	}
+}",
+                "directMessageId",
+                new WebexTeamsMessage
+                {
+                    Id = "directMessageId",
+                    RoomId = "roomId",
+                    RoomType = "direct",
+                    Text = "test",
+                    PersonId = "senderId",
+                    PersonEmail = "sender.email@test.com",
+                    Created = new DateTime(2019, 6, 30, 22, 32, 59)
+                },
+                new GlobalXMessage
+                {
+                    Created = new DateTime(2019, 6, 30, 22, 32, 59),
+                    Text = "test",
+                    MessageParts = new[]
+                    {
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = "test"
+                        }
+                    },
+                    SenderId = "senderId",
+                    RoomId = "roomId",
+                    RoomType = RoomType.Direct
                 }
             };
         }
