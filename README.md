@@ -32,7 +32,7 @@ through appsettings.json, or at the time of configuring the bot.
 // In appsettings.json
 {
     "GlobalX.ChatBots.WebexTeams": {
-        "WebexTeamsApiUrl": "https://api.ciscospark.com/v1",
+        "WebexTeamsApiUrl": "https://api.ciscospark.com",
         "BotAuthToken": "token",
         "Webhooks": [
             {
@@ -74,7 +74,7 @@ public IServiceProvider ConfigureServices(IServiceCollection services)
     // Add other service registrations here
     var settings = new WebexTeamsSettings
     {
-        WebexTeamsApiUrl = "https://api.ciscospark.com/v1",
+        WebexTeamsApiUrl = "https://api.ciscospark.com",
         BotAuthToken = "token",
         Webhooks = new[]
         {
@@ -117,7 +117,7 @@ using GlobalX.ChatBots.WebexTeams.Configuration;
 
 var settings = new WebexTeamsSettings
 {
-    WebexTeamsApiUrl = "https://api.ciscospark.com/v1",
+    WebexTeamsApiUrl = "https://api.ciscospark.com",
     BotAuthToken = "token"
 };
 

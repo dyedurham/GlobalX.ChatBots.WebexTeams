@@ -21,7 +21,7 @@ namespace GlobalX.ChatBots.WebexTeams.Services
 
         public async Task<Message> GetMessageAsync(string messageId)
         {
-            var result = await _httpClientProxy.GetAsync($"/messages/{messageId}").ConfigureAwait(false);
+            var result = await _httpClientProxy.GetAsync($"/v1/messages/{messageId}").ConfigureAwait(false);
             var message = JsonConvert.DeserializeObject<Message>(result, _defaultJsonSerializerSettings);
             return message;
         }
@@ -29,28 +29,28 @@ namespace GlobalX.ChatBots.WebexTeams.Services
         public async Task<Message> SendMessageAsync(CreateMessageRequest request)
         {
             var json = JsonConvert.SerializeObject(request, _defaultJsonSerializerSettings);
-            var result = await _httpClientProxy.PostAsync("/messages", json).ConfigureAwait(false);
+            var result = await _httpClientProxy.PostAsync("/v1/messages", json).ConfigureAwait(false);
             var resultObject = JsonConvert.DeserializeObject<Message>(result, _defaultJsonSerializerSettings);
             return resultObject;
         }
 
         public async Task<Person> GetPersonAsync(string personId)
         {
-            var result = await _httpClientProxy.GetAsync($"/people/{personId}").ConfigureAwait(false);
+            var result = await _httpClientProxy.GetAsync($"/v1/people/{personId}").ConfigureAwait(false);
             var person = JsonConvert.DeserializeObject<Person>(result, _defaultJsonSerializerSettings);
             return person;
         }
 
         public async Task<Room> GetRoomAsync(string roomId)
         {
-            var result = await _httpClientProxy.GetAsync($"/rooms/{roomId}").ConfigureAwait(false);
+            var result = await _httpClientProxy.GetAsync($"/v1/rooms/{roomId}").ConfigureAwait(false);
             var room = JsonConvert.DeserializeObject<Room>(result, _defaultJsonSerializerSettings);
             return room;
         }
 
         public async Task<Webhook[]> GetWebhooksAsync()
         {
-            var result = await _httpClientProxy.GetAsync("/webhooks").ConfigureAwait(false);
+            var result = await _httpClientProxy.GetAsync("/v1/webhooks").ConfigureAwait(false);
             var response = JsonConvert.DeserializeObject<WebhookListResponse>(result, _defaultJsonSerializerSettings);
             return response.Items;
         }
@@ -58,14 +58,14 @@ namespace GlobalX.ChatBots.WebexTeams.Services
         public async Task<Webhook> CreateWebhookAsync(CreateWebhookRequest request)
         {
             var json = JsonConvert.SerializeObject(request, _defaultJsonSerializerSettings);
-            var result = await _httpClientProxy.PostAsync("/webhooks", json).ConfigureAwait(false);
+            var result = await _httpClientProxy.PostAsync("/v1/webhooks", json).ConfigureAwait(false);
             var webhook = JsonConvert.DeserializeObject<Webhook>(result, _defaultJsonSerializerSettings);
             return webhook;
         }
 
         public async Task DeleteWebhookAsync(string webhookId)
         {
-            await _httpClientProxy.DeleteAsync($"/webhooks/{webhookId}");
+            await _httpClientProxy.DeleteAsync($"/v1/webhooks/{webhookId}");
         }
     }
 }
