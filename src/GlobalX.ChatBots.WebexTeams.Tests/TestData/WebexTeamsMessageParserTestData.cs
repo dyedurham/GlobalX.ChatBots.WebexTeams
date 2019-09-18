@@ -194,6 +194,57 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                     RoomType = RoomType.Group
                 }
             };
+
+            // trailing <br/> tags
+            yield return new object[]
+            {
+                new WebexTeamsMessage
+                {
+                    Id = "messageId",
+                    RoomId = "roomId",
+                    RoomType = "group",
+                    Text = "TestBot All test things",
+                    PersonId = "senderId",
+                    PersonEmail = "sender.email@test.com",
+                    Html = "<p><spark-mention data-object-type=\"person\" data-object-id=\"testBotId\">TestBot</spark-mention> <spark-mention data-object-type=\"groupMention\" data-group-type=\"all\">All</spark-mention> test things</p><br/><br /><br>",
+                    MentionedPeople = new[]{ "testBotId" },
+                    MentionedGroups = new []{ "all" },
+                    Created = new DateTime(2019, 7, 8, 22, 55, 52)
+                },
+                new GlobalXMessage
+                {
+                    Created = new DateTime(2019, 7, 8, 22, 55, 52),
+                    Text = "TestBot All test things",
+                    MessageParts = new[]
+                    {
+                        new MessagePart
+                        {
+                            MessageType = MessageType.PersonMention,
+                            Text = "TestBot",
+                            UserId = "testBotId"
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = " "
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.GroupMention,
+                            Text = "All",
+                            UserId = "all"
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = " test things",
+                        }
+                    },
+                    SenderId = "senderId",
+                    RoomId = "roomId",
+                    RoomType = RoomType.Group
+                }
+            };
         }
 
         public static IEnumerable<object[]> UnsuccessfulParseMessageTestData()

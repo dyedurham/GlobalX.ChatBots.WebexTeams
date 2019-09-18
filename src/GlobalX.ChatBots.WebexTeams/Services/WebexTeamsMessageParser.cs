@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 using AutoMapper;
 using GlobalX.ChatBots.Core.Messages;
@@ -127,13 +128,14 @@ namespace GlobalX.ChatBots.WebexTeams.Services
 
         private XmlDocument TryParseXml(string xml)
         {
+            var cleanedXml = Regex.Replace(xml, @"<\s*br\s*\/*>", "\n").Trim();
             bool success = false;
             var document = new XmlDocument();
             document.PreserveWhitespace = true;
 
             try
             {
-                document.LoadXml(xml);
+                document.LoadXml(cleanedXml);
                 success = true;
             }
             catch (XmlException)
