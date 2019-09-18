@@ -20,7 +20,7 @@ module.exports = {
         // the artifacts folder to NuGet
         {
             path: '@semantic-release/exec',
-            cmd: `dotnet nuget push .\\artifacts\\*.nupkg -k ${process.env.NUGET_API_KEY} -s https://api.nuget.org/v3/index.json`,
+            cmd: `dotnet nuget push ./artifacts/*.nupkg -k ${process.env.NUGET_API_KEY} -s https://api.nuget.org/v3/index.json`,
         },
         
         // https://github.com/semantic-release/github
