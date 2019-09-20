@@ -7,9 +7,9 @@ using Microsoft.Extensions.Options;
 
 namespace GlobalX.ChatBots.WebexTeams
 {
-    public class WebexTeamsChatHelperFactory
+    public static class WebexTeamsChatHelperFactory
     {
-        public WebexTeamsChatHelper CreateWebexTeamsChatHelper(WebexTeamsSettings settings)
+        public static WebexTeamsChatHelper CreateWebexTeamsChatHelper(WebexTeamsSettings settings)
         {
             var httpClient = new HttpClient{
                 BaseAddress = new Uri("https://api.ciscospark.com/v1")
