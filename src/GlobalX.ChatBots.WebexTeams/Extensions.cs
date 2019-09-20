@@ -32,14 +32,14 @@ namespace GlobalX.ChatBots.WebexTeams
         private static IServiceCollection ConfigureCommonServices(this IServiceCollection services)
         {
             services.AddHttpClient<IHttpClientProxy, HttpClientProxy>();
-            services.AddScoped<IWebexTeamsApiService, WebexTeamsApiService>();
-            services.AddScoped<IChatHelper, WebexTeamsChatHelper>();
-            services.AddScoped<IWebhookHelper, WebexTeamsChatHelper>();
-            services.AddScoped<IMessageHandler, WebexTeamsMessageHandler>();
-            services.AddScoped<IPersonHandler, WebexTeamsPersonHandler>();
-            services.AddScoped<IRoomHandler, WebexTeamsRoomHandler>();
-            services.AddScoped<IWebexTeamsMessageParser, WebexTeamsMessageParser>();
-            services.AddScoped<IWebexTeamsWebhookHandler, WebexTeamsWebhookHandler>();
+            services.AddTransient<IWebexTeamsApiService, WebexTeamsApiService>();
+            services.AddTransient<IChatHelper, WebexTeamsChatHelper>();
+            services.AddTransient<IWebhookHelper, WebexTeamsChatHelper>();
+            services.AddTransient<IMessageHandler, WebexTeamsMessageHandler>();
+            services.AddTransient<IPersonHandler, WebexTeamsPersonHandler>();
+            services.AddTransient<IRoomHandler, WebexTeamsRoomHandler>();
+            services.AddTransient<IWebexTeamsMessageParser, WebexTeamsMessageParser>();
+            services.AddTransient<IWebexTeamsWebhookHandler, WebexTeamsWebhookHandler>();
             services.AddSingleton(WebexTeamsMapperFactory.CreateMapper());
             return services;
         }
