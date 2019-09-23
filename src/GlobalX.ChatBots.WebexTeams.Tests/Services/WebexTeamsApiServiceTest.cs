@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using GlobalX.ChatBots.WebexTeams.Models;
@@ -36,7 +35,8 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
         }
 
         [Theory]
-        [MemberData(nameof(WebexTeamsApiServiceTestData.GetMessageTestData), MemberType = typeof(WebexTeamsApiServiceTestData))]
+        [MemberData(nameof(WebexTeamsApiServiceTestData.GetMessageTestData),
+            MemberType = typeof(WebexTeamsApiServiceTestData))]
         internal void TestGetMessage(string messageId, string httpResponse, Message response)
         {
             this.Given(x => GivenAMessageId(messageId))
@@ -47,7 +47,8 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
         }
 
         [Theory]
-        [MemberData(nameof(WebexTeamsApiServiceTestData.SendMessageTestData), MemberType = typeof(WebexTeamsApiServiceTestData))]
+        [MemberData(nameof(WebexTeamsApiServiceTestData.SendMessageTestData),
+            MemberType = typeof(WebexTeamsApiServiceTestData))]
         internal void TestSendMessage(CreateMessageRequest request, string httpResponse, Message response)
         {
             this.Given(x => GivenACreateMessageRequest(request))
@@ -58,7 +59,8 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
         }
 
         [Theory]
-        [MemberData(nameof(WebexTeamsApiServiceTestData.GetPersonTestData), MemberType = typeof(WebexTeamsApiServiceTestData))]
+        [MemberData(nameof(WebexTeamsApiServiceTestData.GetPersonTestData),
+            MemberType = typeof(WebexTeamsApiServiceTestData))]
         internal void TestGetPerson(string personId, string httpResponse, Person response)
         {
             this.Given(x => GivenAPersonId(personId))
@@ -69,7 +71,8 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
         }
 
         [Theory]
-        [MemberData(nameof(WebexTeamsApiServiceTestData.GetRoomTestData), MemberType = typeof(WebexTeamsApiServiceTestData))]
+        [MemberData(nameof(WebexTeamsApiServiceTestData.GetRoomTestData),
+            MemberType = typeof(WebexTeamsApiServiceTestData))]
         internal void TestGetRoom(string roomId, string httpResponse, Room response)
         {
             this.Given(x => GivenARoomId(roomId))
@@ -80,7 +83,8 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
         }
 
         [Theory]
-        [MemberData(nameof(WebexTeamsApiServiceTestData.GetWebhooksTestData), MemberType = typeof(WebexTeamsApiServiceTestData))]
+        [MemberData(nameof(WebexTeamsApiServiceTestData.GetWebhooksTestData),
+            MemberType = typeof(WebexTeamsApiServiceTestData))]
         internal void TestGetWebhooks(string httpResponse, Webhook[] response)
         {
             this.Given(x => GivenAGetWebhooksRequest())
@@ -91,7 +95,8 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
         }
 
         [Theory]
-        [MemberData(nameof(WebexTeamsApiServiceTestData.CreateWebhookTestData), MemberType = typeof(WebexTeamsApiServiceTestData))]
+        [MemberData(nameof(WebexTeamsApiServiceTestData.CreateWebhookTestData),
+            MemberType = typeof(WebexTeamsApiServiceTestData))]
         internal void TestCreateWebhook(CreateWebhookRequest request, string httpResponse, Webhook response)
         {
             this.Given(x => GivenACreateWebhookRequest(request))
@@ -102,7 +107,8 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
         }
 
         [Theory]
-        [MemberData(nameof(WebexTeamsApiServiceTestData.DeleteWebhookTestData), MemberType = typeof(WebexTeamsApiServiceTestData))]
+        [MemberData(nameof(WebexTeamsApiServiceTestData.DeleteWebhookTestData),
+            MemberType = typeof(WebexTeamsApiServiceTestData))]
         internal void TestDeleteWebhook(string webhookId)
         {
             this.Given(x => GivenAWebhookId(webhookId))
@@ -216,7 +222,8 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
                     if (message.Files != null)
                     {
                         _messageResponse.Files.ShouldNotBeNull();
-                        _messageResponse.Files.OrderBy(x => x).SequenceEqual(message.Files.OrderBy(x => x)).ShouldBeTrue();
+                        _messageResponse.Files.OrderBy(x => x).SequenceEqual(message.Files.OrderBy(x => x))
+                            .ShouldBeTrue();
                     }
                     else
                     {
@@ -230,7 +237,8 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
                     if (message.MentionedPeople != null)
                     {
                         _messageResponse.MentionedPeople.ShouldNotBeNull();
-                        _messageResponse.MentionedPeople.OrderBy(x => x).SequenceEqual(message.MentionedPeople.OrderBy(x => x)).ShouldBeTrue();
+                        _messageResponse.MentionedPeople.OrderBy(x => x)
+                            .SequenceEqual(message.MentionedPeople.OrderBy(x => x)).ShouldBeTrue();
                     }
                     else
                     {
@@ -242,7 +250,8 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
                     if (message.MentionedGroups != null)
                     {
                         _messageResponse.MentionedGroups.ShouldNotBeNull();
-                        _messageResponse.MentionedGroups.OrderBy(x => x).SequenceEqual(message.MentionedGroups.OrderBy(x => x)).ShouldBeTrue();
+                        _messageResponse.MentionedGroups.OrderBy(x => x)
+                            .SequenceEqual(message.MentionedGroups.OrderBy(x => x)).ShouldBeTrue();
                     }
                     else
                     {
@@ -279,7 +288,8 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
                     if (person.Emails != null)
                     {
                         _personResponse.Emails.ShouldNotBeNull();
-                        _personResponse.Emails.OrderBy(x => x).SequenceEqual(person.Emails.OrderBy(x => x)).ShouldBeTrue();
+                        _personResponse.Emails.OrderBy(x => x).SequenceEqual(person.Emails.OrderBy(x => x))
+                            .ShouldBeTrue();
                     }
                     else
                     {
@@ -291,7 +301,8 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
                     if (person.PhoneNumbers != null)
                     {
                         _personResponse.PhoneNumbers.ShouldNotBeNull();
-                        _personResponse.PhoneNumbers.OrderBy(x => x).SequenceEqual(person.PhoneNumbers.OrderBy(x => x)).ShouldBeTrue();
+                        _personResponse.PhoneNumbers.OrderBy(x => x).SequenceEqual(person.PhoneNumbers.OrderBy(x => x))
+                            .ShouldBeTrue();
                     }
                     else
                     {
@@ -321,7 +332,8 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
                     if (person.Licenses != null)
                     {
                         _personResponse.Licenses.ShouldNotBeNull();
-                        _personResponse.Licenses.OrderBy(x => x).SequenceEqual(person.Licenses.OrderBy(x => x)).ShouldBeTrue();
+                        _personResponse.Licenses.OrderBy(x => x).SequenceEqual(person.Licenses.OrderBy(x => x))
+                            .ShouldBeTrue();
                     }
                     else
                     {

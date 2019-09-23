@@ -36,10 +36,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
             _messageParser = Substitute.For<IWebexTeamsMessageParser>();
             var options = Substitute.For<IOptions<WebexTeamsSettings>>();
             options.Value.Returns(_settings);
-            var mapper = new MapperConfiguration(c =>
-            {
-                c.AddProfile<WebhookMapper>();
-            }).CreateMapper();
+            var mapper = new MapperConfiguration(c => { c.AddProfile<WebhookMapper>(); }).CreateMapper();
             _subject = new WebexTeamsWebhookHandler(_apiService, options, new WebexTeamsMapper(mapper), _messageParser);
         }
 
@@ -95,7 +92,8 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
             GlobalXMessage parsedMessage)
         {
             _apiService.GetMessageAsync(messageId).Returns(Task.FromResult(apiResponse));
-            _messageParser.ParseMessage(Arg.Is<WebexTeamsMessage>(x => x.Id == apiResponse.Id && x.Html == apiResponse.Html))
+            _messageParser
+                .ParseMessage(Arg.Is<WebexTeamsMessage>(x => x.Id == apiResponse.Id && x.Html == apiResponse.Html))
                 .Returns(parsedMessage);
             _result = await _subject.ProcessMessageWebhookCallbackAsync(_callbackBody);
         }
@@ -126,7 +124,8 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
             _result.ShouldSatisfyAllConditions(
                 () => _result.Created.ShouldBe(result.Created),
                 () => _result.Text.ShouldBe(result.Text),
-                () => {
+                () =>
+                {
                     if (result.MessageParts != null)
                     {
                         _result.MessageParts.ShouldNotBeNull();

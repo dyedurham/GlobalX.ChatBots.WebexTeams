@@ -34,7 +34,8 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
         }
 
         [Theory]
-        [MemberData(nameof(WebexTeamsMessageParserTestData.ParseMessageTestData), MemberType = typeof(WebexTeamsMessageParserTestData))]
+        [MemberData(nameof(WebexTeamsMessageParserTestData.ParseMessageTestData), MemberType =
+            typeof(WebexTeamsMessageParserTestData))]
         internal void TestParseMessage(WebexTeamsMessage input, GlobalXMessage output)
         {
             this.Given(x => GivenAWebexTeamsMessage(input))
@@ -57,7 +58,8 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
         }
 
         [Theory]
-        [MemberData(nameof(WebexTeamsMessageParserTestData.ParseCreateMessageRequestTestData), MemberType = typeof(WebexTeamsMessageParserTestData))]
+        [MemberData(nameof(WebexTeamsMessageParserTestData.ParseCreateMessageRequestTestData), MemberType =
+            typeof(WebexTeamsMessageParserTestData))]
         internal void TestParseCreateMessageRequest(GlobalXMessage input, CreateMessageRequest output)
         {
             this.Given(x => GivenAGlobalXMessage(input))
@@ -156,7 +158,8 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
                     if (request.Files != null)
                     {
                         _createMessageRequest.Files.ShouldNotBeNull();
-                        _createMessageRequest.Files.OrderBy(x => x).SequenceEqual(request.Files.OrderBy(x => x)).ShouldBeTrue();
+                        _createMessageRequest.Files.OrderBy(x => x).SequenceEqual(request.Files.OrderBy(x => x))
+                            .ShouldBeTrue();
                     }
                     else
                     {

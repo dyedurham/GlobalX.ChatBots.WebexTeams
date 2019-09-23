@@ -35,7 +35,8 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
         }
 
         [Theory]
-        [MemberData(nameof(WebexTeamsRoomHandlerTestData.SuccessfulGetRoomTestData), MemberType = typeof(WebexTeamsRoomHandlerTestData))]
+        [MemberData(nameof(WebexTeamsRoomHandlerTestData.SuccessfulGetRoomTestData), MemberType =
+            typeof(WebexTeamsRoomHandlerTestData))]
         internal void TestGetPerson(string input, WebexTeamsRoom apiResponse, GlobalXRoom output)
         {
             this.Given(x => GivenAPersonId(input))

@@ -2,13 +2,13 @@ using GlobalX.ChatBots.Core;
 using GlobalX.ChatBots.Core.Messages;
 using GlobalX.ChatBots.Core.People;
 using GlobalX.ChatBots.Core.Rooms;
-using GlobalX.ChatBots.WebexTeams.Services;
 
 namespace GlobalX.ChatBots.WebexTeams
 {
     public class WebexTeamsChatHelper : IChatHelper, IWebhookHelper
     {
-        public WebexTeamsChatHelper(IMessageHandler messages, IPersonHandler people, IRoomHandler rooms, IWebexTeamsWebhookHandler webhooks)
+        public WebexTeamsChatHelper(IMessageHandler messages, IPersonHandler people, IRoomHandler rooms,
+            IWebexTeamsWebhookHandler webhooks)
         {
             Messages = messages;
             People = people;

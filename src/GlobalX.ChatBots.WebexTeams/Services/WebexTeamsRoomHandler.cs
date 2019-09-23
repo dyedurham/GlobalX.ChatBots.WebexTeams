@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using GlobalX.ChatBots.Core.Rooms;
 using GlobalX.ChatBots.WebexTeams.Mappers;

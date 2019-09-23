@@ -36,7 +36,8 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
         }
 
         [Theory]
-        [MemberData(nameof(WebexTeamsPersonHandlerTestData.SuccessfulGetPersonTestData), MemberType = typeof(WebexTeamsPersonHandlerTestData))]
+        [MemberData(nameof(WebexTeamsPersonHandlerTestData.SuccessfulGetPersonTestData), MemberType =
+            typeof(WebexTeamsPersonHandlerTestData))]
         internal void TestGetPerson(string input, WebexTeamsPerson apiResponse, GlobalXPerson output)
         {
             this.Given(x => GivenAPersonId(input))
