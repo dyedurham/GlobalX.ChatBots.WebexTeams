@@ -1,3 +1,38 @@
+# 1.0.0 (2019-09-23)
+
+
+### Bug Fixes
+
+* fix configuration code ([dd43fd9](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/dd43fd9))
+* fix json serialization ([a131cfb](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/a131cfb))
+* fix tests ([8332870](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/8332870))
+* give library control over api version it uses ([a932bd0](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/a932bd0))
+* **message-parser:** correctly parse br tags in xml ([3579df7](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/3579df7))
+* **webhookservice:** do not attempt to register webhooks if webhooks are null ([0bb8e28](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/0bb8e28))
+* make chat helper factory static ([6b3e085](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/6b3e085))
+* pad base64 strings before attempting to decode ([a76f0e0](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/a76f0e0))
+* properly subclass IMapper ([aaea666](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/aaea666))
+* use dotnet core 2.1 dependencies ([ffc4a0b](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/ffc4a0b))
+
+
+### Features
+
+* add webhook registration to chat helper ([e76224c](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/e76224c))
+* add webhook service ([057f073](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/057f073))
+* begin to implement sending and getting messages ([44610eb](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/44610eb))
+* implement parse create message request ([2c3f249](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/2c3f249))
+* parse message XML ([6cf796a](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/6cf796a))
+* **webhooks:** implement webhook api calls ([c2ea0f7](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/c2ea0f7))
+* scaffold out main required classes ([a3a288c](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/a3a288c))
+* **configuration:** add configuration for webhooks ([0b03ae2](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/0b03ae2))
+* **configuration:** properly configure bot using appsettings ([881cc83](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/881cc83))
+* **messages:** add sender name to create message response ([21c9e23](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/21c9e23))
+* **people:** implement person handler ([da1c29c](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/da1c29c))
+* **rooms:** implement webex room handler ([ba6e046](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/ba6e046))
+* **webhooks:** process webhook message callbacks ([4b20022](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/4b20022))
+* use .net standard 2.0 instead of .net core ([6e5bfd4](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/6e5bfd4))
+* use transients because it doesn't matter if we get the same instance each time ([202b001](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/202b001))
+
 # Changelog
 All notable changes to this project will be documented in this file.
 
