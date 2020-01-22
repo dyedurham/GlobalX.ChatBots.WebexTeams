@@ -7,6 +7,9 @@ using GlobalX.ChatBots.WebexTeams.Configuration;
 using GlobalX.ChatBots.WebexTeams.Models;
 using GlobalXMessage = GlobalX.ChatBots.Core.Messages.Message;
 using WebexTeamsMessage = GlobalX.ChatBots.WebexTeams.Models.Message;
+using GlobalXPerson = GlobalX.ChatBots.Core.People.Person;
+using WebexTeamsPerson = GlobalX.ChatBots.WebexTeams.Models.Person;
+using GlobalX.ChatBots.Core.People;
 
 namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
 {
@@ -113,6 +116,20 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
 
         public static IEnumerable<object[]> SuccessfulProcessMessageWebhookCallbackTestData()
         {
+            var sender = new WebexTeamsPerson
+            {
+                Id = "senderId",
+                DisplayName = "SenderName",
+                Type = "person"
+            };
+            var mappedSender = new GlobalXPerson
+            {
+                Type = PersonType.Person,
+                UserId = "senderId",
+                Username = "SenderName",
+                Emails = Array.Empty<string>()
+            };
+
             yield return new object[]
             {
                 @"{
@@ -134,6 +151,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                     MentionedGroups = new []{ "all" },
                     Created = new DateTime(2019, 7, 8, 22, 55, 52)
                 },
+                sender,
                 new GlobalXMessage
                 {
                     Created = new DateTime(2019, 7, 8, 22, 55, 52),
@@ -163,7 +181,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                             Text = " test things",
                         }
                     },
-                    SenderId = "senderId",
+                    Sender = mappedSender,
                     RoomId = "roomId",
                     RoomType = RoomType.Group
                 }
@@ -187,6 +205,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                     PersonEmail = "sender.email@test.com",
                     Created = new DateTime(2019, 6, 30, 22, 32, 59)
                 },
+                sender,
                 new GlobalXMessage
                 {
                     Created = new DateTime(2019, 6, 30, 22, 32, 59),
@@ -199,7 +218,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                             Text = "test"
                         }
                     },
-                    SenderId = "senderId",
+                    Sender = mappedSender,
                     RoomId = "roomId",
                     RoomType = RoomType.Direct
                 }

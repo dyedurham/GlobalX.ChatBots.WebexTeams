@@ -12,8 +12,7 @@ namespace GlobalX.ChatBots.WebexTeams.Mappers.Profiles
         {
             CreateMap<WebexTeamsMessage, GlobalXMessage>()
                 .ForMember(x => x.MessageParts, opt => opt.Ignore())
-                .ForMember(x => x.SenderId, opt => opt.MapFrom(src => src.PersonId))
-                .ForMember(x => x.SenderName, opt => opt.Ignore());
+                .ForMember(x => x.Sender, opt => opt.Ignore());
         }
     }
 }

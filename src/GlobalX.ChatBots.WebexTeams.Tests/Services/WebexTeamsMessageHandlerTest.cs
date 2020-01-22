@@ -1,4 +1,8 @@
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using GlobalX.ChatBots.WebexTeams.Mappers;
+using GlobalX.ChatBots.WebexTeams.Mappers.Profiles;
 using GlobalX.ChatBots.WebexTeams.Models;
 using GlobalX.ChatBots.WebexTeams.Services;
 using GlobalX.ChatBots.WebexTeams.Tests.TestData;
@@ -7,6 +11,7 @@ using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
 using GlobalXMessage = GlobalX.ChatBots.Core.Messages.Message;
+using GlobalXPerson = GlobalX.ChatBots.Core.People.Person;
 using WebexTeamsMessage = GlobalX.ChatBots.WebexTeams.Models.Message;
 
 namespace GlobalX.ChatBots.WebexTeams.Tests.Services
@@ -26,7 +31,12 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
         {
             _apiService = Substitute.For<IWebexTeamsApiService>();
             _messageParser = Substitute.For<IWebexTeamsMessageParser>();
-            _subject = new WebexTeamsMessageHandler(_apiService, _messageParser);
+            var mapper = new MapperConfiguration(c =>
+            {
+                c.AddProfile<CommonMappers>();
+                c.AddProfile<PersonMapper>();
+            }).CreateMapper();
+            _subject = new WebexTeamsMessageHandler(_apiService, _messageParser, new WebexTeamsMapper(mapper));
         }
 
         [Theory]
@@ -53,7 +63,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
             _messageParser.ParseCreateMessageRequest(_input).Returns(parsedInput);
             _apiService.SendMessageAsync(parsedInput).Returns(Task.FromResult(apiResponse));
             _messageParser.ParseMessage(apiResponse).Returns(parsedApiResponse);
-            _apiService.GetPersonAsync(parsedApiResponse.SenderId).Returns(Task.FromResult(sender));
+            _apiService.GetPersonAsync(apiResponse.PersonId).Returns(Task.FromResult(sender));
             _output = await _subject.SendMessageAsync(_input);
         }
 
@@ -85,10 +95,42 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
                         _output.MessageParts.ShouldBeNull();
                     }
                 },
-                () => _output.SenderId.ShouldBe(output.SenderId),
-                () => _output.SenderName.ShouldBe(output.SenderName),
+                () =>
+                {
+                    if (output.Sender != null)
+                    {
+                        ComparePeople(output.Sender, _output.Sender);
+                    }
+                    else
+                    {
+                        _output.Sender.ShouldBeNull();
+                    }
+                },
                 () => _output.RoomId.ShouldBe(output.RoomId),
                 () => _output.RoomType.ShouldBe(output.RoomType)
+            );
+        }
+
+        private static void ComparePeople(GlobalXPerson expected, GlobalXPerson actual)
+        {
+            actual.ShouldNotBeNull();
+            actual.ShouldSatisfyAllConditions(
+                () => actual.Created.ShouldBe(expected.Created),
+                () => actual.Username.ShouldBe(expected.Username),
+                () => actual.UserId.ShouldBe(expected.UserId),
+                () =>
+                {
+                    if (expected.Emails != null)
+                    {
+                        actual.Emails.ShouldNotBeNull();
+                        actual.Emails.OrderBy(x => x).SequenceEqual(expected.Emails.OrderBy(x => x)).ShouldBe(true);
+                    }
+                    else
+                    {
+                        actual.Emails.ShouldBeNull();
+                    }
+                },
+                () => actual.Type.ShouldBe(expected.Type)
             );
         }
     }

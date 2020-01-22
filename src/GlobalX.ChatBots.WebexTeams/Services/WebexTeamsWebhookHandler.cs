@@ -5,6 +5,7 @@ using GlobalX.ChatBots.WebexTeams.Models;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Message = GlobalX.ChatBots.Core.Messages.Message;
+using Person = GlobalX.ChatBots.Core.People.Person;
 
 namespace GlobalX.ChatBots.WebexTeams.Services
 {
@@ -49,8 +50,12 @@ namespace GlobalX.ChatBots.WebexTeams.Services
         public async Task<Message> ProcessMessageWebhookCallbackAsync(string body)
         {
             var data = JsonConvert.DeserializeObject<MessageWebhookCallback>(body);
-            var message = await _apiService.GetMessageAsync(data.Data.Id);
-            return _messageParser.ParseMessage(message);
+            var message = await _apiService.GetMessageAsync(data.Data.Id).ConfigureAwait(false);
+            var sender = await _apiService.GetPersonAsync(message.PersonId).ConfigureAwait(false);
+            var parsedMessage = _messageParser.ParseMessage(message);
+            var parsedSender = _mapper.Map<Person>(sender);
+            parsedMessage.Sender = parsedSender;
+            return parsedMessage;
         }
     }
 }

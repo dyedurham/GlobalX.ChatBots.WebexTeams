@@ -57,7 +57,6 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                             Text = " test things",
                         }
                     },
-                    SenderId = "senderId",
                     RoomId = "roomId",
                     RoomType = RoomType.Group
                 }
@@ -87,7 +86,6 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                             Text = "test"
                         }
                     },
-                    SenderId = "senderId",
                     RoomId = "roomId",
                     RoomType = RoomType.Direct
                 }
@@ -138,7 +136,6 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                             Text = " test things",
                         }
                     },
-                    SenderId = "senderId",
                     RoomId = "roomId",
                     RoomType = RoomType.Group
                 }
@@ -189,7 +186,6 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                             Text = " test things",
                         }
                     },
-                    SenderId = "senderId",
                     RoomId = "roomId",
                     RoomType = RoomType.Group
                 }
@@ -240,7 +236,6 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                             Text = " test things",
                         }
                     },
-                    SenderId = "senderId",
                     RoomId = "roomId",
                     RoomType = RoomType.Group
                 }
