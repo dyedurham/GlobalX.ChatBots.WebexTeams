@@ -138,8 +138,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
                         _globalXMessage.MessageParts.ShouldBeNull();
                     }
                 },
-                () => _globalXMessage.SenderId.ShouldBe(message.SenderId),
-                () => _globalXMessage.SenderName.ShouldBe(message.SenderName),
+                () => _globalXMessage.Sender.ShouldBeNull(),
                 () => _globalXMessage.RoomId.ShouldBe(message.RoomId),
                 () => _globalXMessage.RoomType.ShouldBe(message.RoomType)
             );

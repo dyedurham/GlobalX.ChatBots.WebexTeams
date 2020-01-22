@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using GlobalX.ChatBots.WebexTeams.Configuration;
@@ -12,7 +13,9 @@ using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
 using GlobalXMessage = GlobalX.ChatBots.Core.Messages.Message;
+using GlobalXPerson = GlobalX.ChatBots.Core.People.Person;
 using WebexTeamsMessage = GlobalX.ChatBots.WebexTeams.Models.Message;
+using WebexTeamsPerson = GlobalX.ChatBots.WebexTeams.Models.Person;
 
 namespace GlobalX.ChatBots.WebexTeams.Tests.Services
 {
@@ -36,7 +39,12 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
             _messageParser = Substitute.For<IWebexTeamsMessageParser>();
             var options = Substitute.For<IOptions<WebexTeamsSettings>>();
             options.Value.Returns(_settings);
-            var mapper = new MapperConfiguration(c => { c.AddProfile<WebhookMapper>(); }).CreateMapper();
+            var mapper = new MapperConfiguration(c =>
+            {
+                c.AddProfile<CommonMappers>();
+                c.AddProfile<WebhookMapper>();
+                c.AddProfile<PersonMapper>();
+            }).CreateMapper();
             _subject = new WebexTeamsWebhookHandler(_apiService, options, new WebexTeamsMapper(mapper), _messageParser);
         }
 
@@ -57,11 +65,11 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
         [Theory]
         [MemberData(nameof(WebexTeamsWebhookHandlerTestData.SuccessfulProcessMessageWebhookCallbackTestData),
             MemberType = typeof(WebexTeamsWebhookHandlerTestData))]
-        internal void TestProcessMessageWebhookCallback(string body, string messageId, WebexTeamsMessage apiResponse,
+        internal void TestProcessMessageWebhookCallback(string body, string messageId, WebexTeamsMessage apiResponse, WebexTeamsPerson sender,
             GlobalXMessage output)
         {
             this.Given(x => GivenACallbackBody(body))
-                .When(x => WhenProcessingAWebhookCallback(messageId, apiResponse, output))
+                .When(x => WhenProcessingAWebhookCallback(messageId, apiResponse, output, sender))
                 .Then(x => ThenItShouldReturnTheGlobalXMessage(output))
                 .BDDfy();
         }
@@ -89,12 +97,13 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
         }
 
         private async void WhenProcessingAWebhookCallback(string messageId, WebexTeamsMessage apiResponse,
-            GlobalXMessage parsedMessage)
+            GlobalXMessage parsedMessage, WebexTeamsPerson sender)
         {
             _apiService.GetMessageAsync(messageId).Returns(Task.FromResult(apiResponse));
             _messageParser
                 .ParseMessage(Arg.Is<WebexTeamsMessage>(x => x.Id == apiResponse.Id && x.Html == apiResponse.Html))
                 .Returns(parsedMessage);
+            _apiService.GetPersonAsync(apiResponse.PersonId).Returns(Task.FromResult(sender));
             _result = await _subject.ProcessMessageWebhookCallbackAsync(_callbackBody);
         }
 
@@ -142,10 +151,42 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
                         _result.MessageParts.ShouldBeNull();
                     }
                 },
-                () => _result.SenderId.ShouldBe(result.SenderId),
-                () => _result.SenderName.ShouldBe(result.SenderName),
+                () =>
+                {
+                    if (result.Sender != null)
+                    {
+                        ComparePeople(result.Sender, _result.Sender);
+                    }
+                    else
+                    {
+                        _result.Sender.ShouldBeNull();
+                    }
+                },
                 () => _result.RoomId.ShouldBe(result.RoomId),
                 () => _result.RoomType.ShouldBe(result.RoomType)
+            );
+        }
+
+        private static void ComparePeople(GlobalXPerson expected, GlobalXPerson actual)
+        {
+            actual.ShouldNotBeNull();
+            actual.ShouldSatisfyAllConditions(
+                () => actual.Created.ShouldBe(expected.Created),
+                () => actual.Username.ShouldBe(expected.Username),
+                () => actual.UserId.ShouldBe(expected.UserId),
+                () =>
+                {
+                    if (expected.Emails != null)
+                    {
+                        actual.Emails.ShouldNotBeNull();
+                        actual.Emails.OrderBy(x => x).SequenceEqual(expected.Emails.OrderBy(x => x)).ShouldBe(true);
+                    }
+                    else
+                    {
+                        actual.Emails.ShouldBeNull();
+                    }
+                },
+                () => actual.Type.ShouldBe(expected.Type)
             );
         }
     }

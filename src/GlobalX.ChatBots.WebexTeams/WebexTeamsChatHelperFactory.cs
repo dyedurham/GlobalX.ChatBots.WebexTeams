@@ -20,7 +20,7 @@ namespace GlobalX.ChatBots.WebexTeams
             var mapper = WebexTeamsMapperFactory.CreateMapper();
             var messageParser = new WebexTeamsMessageParser(mapper);
 
-            var messageHandler = new WebexTeamsMessageHandler(apiService, messageParser);
+            var messageHandler = new WebexTeamsMessageHandler(apiService, messageParser, mapper);
             var personHandler = new WebexTeamsPersonHandler(apiService, mapper);
             var roomHandler = new WebexTeamsRoomHandler(apiService, mapper);
 

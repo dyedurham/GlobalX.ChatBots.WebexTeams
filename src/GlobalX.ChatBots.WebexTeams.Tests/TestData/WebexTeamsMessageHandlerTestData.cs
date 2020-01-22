@@ -2,10 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using GlobalX.ChatBots.Core.Messages;
+using GlobalX.ChatBots.Core.People;
 using GlobalX.ChatBots.Core.Rooms;
 using GlobalX.ChatBots.WebexTeams.Models;
 using GlobalXMessage = GlobalX.ChatBots.Core.Messages.Message;
 using WebexTeamsMessage = GlobalX.ChatBots.WebexTeams.Models.Message;
+using GlobalXPerson = GlobalX.ChatBots.Core.People.Person;
+using WebexTeamsPerson = GlobalX.ChatBots.WebexTeams.Models.Person;
 
 namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
 {
@@ -13,6 +16,20 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
     {
         public static IEnumerable<object[]> SuccessfulSendMessageTestData()
         {
+            var sender = new WebexTeamsPerson
+            {
+                Id = "senderId",
+                DisplayName = "SenderName",
+                Type = "person"
+            };
+            var mappedSender = new GlobalXPerson
+            {
+                Type = PersonType.Person,
+                UserId = "senderId",
+                Username = "SenderName",
+                Emails = Array.Empty<string>()
+            };
+
             yield return new object[]
             {
                 new GlobalXMessage
@@ -92,15 +109,10 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                             Text = " test things",
                         }
                     },
-                    SenderId = "senderId",
                     RoomId = "Y2lzY29zcGFyazovL3VzL1JPT00vcm9vbUlk",
                     RoomType = RoomType.Group
                 },
-                new Person
-                {
-                    Id = "senderId",
-                    DisplayName = "SenderName"
-                },
+                sender,
                 new GlobalXMessage
                 {
                     Created = new DateTime(2019, 7, 8, 22, 55, 52),
@@ -130,8 +142,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                             Text = " test things",
                         }
                     },
-                    SenderId = "senderId",
-                    SenderName = "SenderName",
+                    Sender = mappedSender,
                     RoomId = "Y2lzY29zcGFyazovL3VzL1JPT00vcm9vbUlk",
                     RoomType = RoomType.Group
                 }
@@ -156,7 +167,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                     RoomId = "roomId",
                     RoomType = "direct",
                     Text = "test",
-                    PersonId = "testBotId",
+                    PersonId = "senderId",
                     PersonEmail = "test.bot@test.com",
                     Created = DateTime.Parse("2019-06-30T22:32:59.050Z", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal)
                 },
@@ -172,15 +183,10 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                             Text = "test"
                         }
                     },
-                    SenderId = "senderId",
                     RoomId = "roomId",
                     RoomType = RoomType.Direct
                 },
-                new Person
-                {
-                    Id = "senderId",
-                    DisplayName = "SenderName"
-                },
+                sender,
                 new GlobalXMessage
                 {
                     Created = new DateTime(2019, 6, 30, 22, 32, 59),
@@ -193,8 +199,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                             Text = "test"
                         }
                     },
-                    SenderId = "senderId",
-                    SenderName = "SenderName",
+                    Sender = mappedSender,
                     RoomId = "roomId",
                     RoomType = RoomType.Direct
                 }
