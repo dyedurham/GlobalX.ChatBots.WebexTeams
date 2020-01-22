@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.0.0...v1.1.0) (2020-01-22)
+
+
+### Features
+
+* add full sender object to message ([34561da](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/34561da5bc935bff852099e38fced7c6d318439b))
+
 # 1.0.0 (2019-09-23)
 
 
