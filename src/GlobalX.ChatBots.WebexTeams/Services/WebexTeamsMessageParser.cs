@@ -49,7 +49,7 @@ namespace GlobalX.ChatBots.WebexTeams.Services
                 var parts = new List<MessagePart>();
                 foreach (XmlNode node in xmlDocument.DocumentElement.ChildNodes)
                 {
-                    parts.Add(ParseMessagePart(node));
+                    parts.AddRange(ParseMessagePart(node));
                 }
                 mappedMessage.MessageParts = parts.ToArray();
             }
@@ -111,6 +111,16 @@ namespace GlobalX.ChatBots.WebexTeams.Services
                         case MessageType.GroupMention:
                             markdownBuilder.Append($"<@{messagePart.UserId}>");
                             break;
+                        case MessageType.OrderedList:
+                            markdownBuilder.Append("\n1. ");
+                            markdownBuilder.Append(string.Join("\n1. ", messagePart.ListItems));
+                            markdownBuilder.Append("\n");
+                            break;
+                        case MessageType.UnorderedList:
+                            markdownBuilder.Append("\n1. ");
+                            markdownBuilder.Append(string.Join("\n- ", messagePart.ListItems));
+                            markdownBuilder.Append("\n");
+                            break;
                         default:
                             throw new ArgumentException($"Invalid message type {messagePart.MessageType}");
                     }
@@ -152,13 +162,34 @@ namespace GlobalX.ChatBots.WebexTeams.Services
             return document;
         }
 
-        private MessagePart ParseMessagePart(XmlNode node)
+        private IEnumerable<MessagePart> ParseMessagePart(XmlNode node)
         {
-            if (node.ChildNodes.OfType<XmlElement>().Any())
+            string[] allowedChildNodes = { "code", "ol", "ul", "li", "b", "strong", "i", "em" };
+
+            if (node.ChildNodes.OfType<XmlElement>().Any(x => !allowedChildNodes.Contains(x.Name)))
             {
                 throw new ArgumentException("Html has more levels than expected");
             }
 
+            if (node.Name == "ol" || node.Name == "ul")
+            {
+                return new[] { ParseListMessagePart(node) };
+            }
+
+            if (node.ChildNodes.OfType<XmlElement>().Any())
+            {
+                var parts = new List<MessagePart>();
+                foreach (XmlNode childNode in node.ChildNodes)
+                {
+                    parts.AddRange(ParseMessagePart(childNode));
+                }
+            }
+            
+            return new[] { ParseSingleMessagePart(node) };
+        }
+
+        private MessagePart ParseSingleMessagePart(XmlNode node)
+        {
             var part = new MessagePart();
 
             if (node.Attributes != null && node.Attributes["data-object-type"] != null)
@@ -192,6 +223,30 @@ namespace GlobalX.ChatBots.WebexTeams.Services
             }
 
             part.Text = node.InnerText;
+            return part;
+        }
+
+        private MessagePart ParseListMessagePart(XmlNode node)
+        {
+            var part = new MessagePart();
+            var children = node.ChildNodes.Cast<XmlNode>();
+
+            if (children.Any(x => x.Name != "li"))
+            {
+                throw new ArgumentException("Invalid list html");
+            }
+
+            part.ListItems = children.Select(x => x.InnerText).ToArray();
+            if (node.Name == "ol")
+            {
+                part.MessageType = MessageType.OrderedList;
+                part.Text = $"\n1. {string.Join("\n1. ", part.ListItems)}\n";
+            } else if (node.Name == "ul")
+            {
+                part.MessageType = MessageType.UnorderedList;
+                part.Text = $"\n- {string.Join("\n- ", part.ListItems)}\n";
+            }
+
             return part;
         }
 

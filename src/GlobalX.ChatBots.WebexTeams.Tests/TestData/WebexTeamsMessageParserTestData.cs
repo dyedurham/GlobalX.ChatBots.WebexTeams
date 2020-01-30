@@ -275,7 +275,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                     Text = "TestBot All test things",
                     PersonId = "senderId",
                     PersonEmail = "sender.email@test.com",
-                    Html = "<p><spark-mention data-object-type=\"person\" data-object-id=\"testBotId\">Test<b>Bot</b></spark-mention> <spark-mention data-object-type=\"groupMention\" data-group-type=\"all\">All</spark-mention> test things</p>",
+                    Html = "<p><spark-mention data-object-type=\"person\" data-object-id=\"testBotId\">Test<div>Bot</div></spark-mention> <spark-mention data-object-type=\"groupMention\" data-group-type=\"all\">All</spark-mention> test things</p>",
                     MentionedPeople = new[]{ "testBotId" },
                     MentionedGroups = new []{ "all" },
                     Created = new DateTime(2019, 7, 8, 22, 55, 52)
