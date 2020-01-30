@@ -131,6 +131,11 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
                             _globalXMessage.MessageParts[i].MessageType.ShouldBe(message.MessageParts[i].MessageType);
                             _globalXMessage.MessageParts[i].Text.ShouldBe(message.MessageParts[i].Text);
                             _globalXMessage.MessageParts[i].UserId.ShouldBe(message.MessageParts[i].UserId);
+                            if (message.MessageParts[i].ListItems != null)
+                            {
+                                _globalXMessage.MessageParts[i].ListItems
+                                    .SequenceEqual(message.MessageParts[i].ListItems).ShouldBeTrue();
+                            }
                         }
                     }
                     else

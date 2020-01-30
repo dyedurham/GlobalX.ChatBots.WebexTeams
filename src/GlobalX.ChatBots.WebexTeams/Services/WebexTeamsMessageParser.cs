@@ -117,7 +117,7 @@ namespace GlobalX.ChatBots.WebexTeams.Services
                             markdownBuilder.Append("\n");
                             break;
                         case MessageType.UnorderedList:
-                            markdownBuilder.Append("\n1. ");
+                            markdownBuilder.Append("\n- ");
                             markdownBuilder.Append(string.Join("\n- ", messagePart.ListItems));
                             markdownBuilder.Append("\n");
                             break;
@@ -240,12 +240,12 @@ namespace GlobalX.ChatBots.WebexTeams.Services
             if (node.Name == "ol")
             {
                 part.MessageType = MessageType.OrderedList;
-                part.Text = $"\n1. {string.Join("\n1. ", part.ListItems)}\n";
             } else if (node.Name == "ul")
             {
                 part.MessageType = MessageType.UnorderedList;
-                part.Text = $"\n- {string.Join("\n- ", part.ListItems)}\n";
             }
+
+            part.Text = string.Join(" ", part.ListItems);
 
             return part;
         }

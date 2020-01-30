@@ -240,6 +240,152 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                     RoomType = RoomType.Group
                 }
             };
+
+            // Ordered lists
+            yield return new object[]
+            {
+                new WebexTeamsMessage
+                {
+                    Id = "messageId",
+                    RoomId = "roomId",
+                    RoomType = "group",
+                    Text = "This contains an ordered list: List item 1 List item 2 List item 3 has a code block",
+                    PersonId = "senderId",
+                    PersonEmail = "sender.email@test.com",
+                    Html = "<p>This contains an ordered list:<ol><li>List item 1</li><li>List item 2</li><li>List item 3 <code>has a code block</code></li></ol></p>",
+                    MentionedPeople = new string[0],
+                    MentionedGroups = new string[0],
+                    Created = new DateTime(2019, 7, 8, 22, 55, 52)
+                },
+                new GlobalXMessage
+                {
+                    Created = new DateTime(2019, 7, 8, 22, 55, 52),
+                    Text = "This contains an ordered list: List item 1 List item 2 List item 3 has a code block",
+                    MessageParts = new[]
+                    {
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = "This contains an ordered list:"
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.OrderedList,
+                            Text = "List item 1 List item 2 List item 3 has a code block",
+                            ListItems = new []
+                            {
+                                "List item 1",
+                                "List item 2",
+                                "List item 3 has a code block"
+                            }
+                        }
+                    },
+                    RoomId = "roomId",
+                    RoomType = RoomType.Group
+                }
+            };
+
+            // Unordered lists
+            yield return new object[]
+            {
+                new WebexTeamsMessage
+                {
+                    Id = "messageId",
+                    RoomId = "roomId",
+                    RoomType = "group",
+                    Text = "This contains an unordered list: List item 1 List item 2 List item 3 has a code block",
+                    PersonId = "senderId",
+                    PersonEmail = "sender.email@test.com",
+                    Html = "<p>This contains an unordered list:<ul><li>List item 1</li><li>List item 2</li><li>List item 3 <code>has a code block</code></li></ul></p>",
+                    MentionedPeople = new string[0],
+                    MentionedGroups = new string[0],
+                    Created = new DateTime(2019, 7, 8, 22, 55, 52)
+                },
+                new GlobalXMessage
+                {
+                    Created = new DateTime(2019, 7, 8, 22, 55, 52),
+                    Text = "This contains an unordered list: List item 1 List item 2 List item 3 has a code block",
+                    MessageParts = new[]
+                    {
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = "This contains an unordered list:"
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.UnorderedList,
+                            Text = "List item 1 List item 2 List item 3 has a code block",
+                            ListItems = new []
+                            {
+                                "List item 1",
+                                "List item 2",
+                                "List item 3 has a code block"
+                            }
+                        }
+                    },
+                    RoomId = "roomId",
+                    RoomType = RoomType.Group
+                }
+            };
+
+            // Inline html elements
+            yield return new object[]
+            {
+                new WebexTeamsMessage
+                {
+                    Id = "messageId",
+                    RoomId = "roomId",
+                    RoomType = "group",
+                    Text = "This contains inline html elements: boldstrongitalic and emphasis",
+                    PersonId = "senderId",
+                    PersonEmail = "sender.email@test.com",
+                    Html = "<p>This contains inline html elements: <b>bold</b><strong>strong</strong><i>italic</i> and <em>emphasis</em></p>",
+                    MentionedPeople = new string[0],
+                    MentionedGroups = new string[0],
+                    Created = new DateTime(2019, 7, 8, 22, 55, 52)
+                },
+                new GlobalXMessage
+                {
+                    Created = new DateTime(2019, 7, 8, 22, 55, 52),
+                    Text = "This contains inline html elements: boldstrongitalic and emphasis",
+                    MessageParts = new[]
+                    {
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = "This contains inline html elements: "
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = "bold"
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = "strong"
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = "italic"
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = " and "
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = "emphasis"
+                        }
+                    },
+                    RoomId = "roomId",
+                    RoomType = RoomType.Group
+                }
+            };
         }
 
         public static IEnumerable<object[]> UnsuccessfulParseMessageTestData()
@@ -323,6 +469,26 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                 typeof(ArgumentException),
                 "Invalid mention type invalid"
             };
+
+            // Bad list html
+            yield return new object[]
+            {
+                new WebexTeamsMessage
+                {
+                    Id = "messageId",
+                    RoomId = "roomId",
+                    RoomType = "group",
+                    Text = "This contains an unordered list: List item 1 List item 2 List item 3 has a code blockThis shouldn't be here",
+                    PersonId = "senderId",
+                    PersonEmail = "sender.email@test.com",
+                    Html = "<p>This contains an unordered list:<ul><li>List item 1</li><li>List item 2</li><li>List item 3 <code>has a code block</code></li>This shouldn't be here</ul></p>",
+                    MentionedPeople = new string[0],
+                    MentionedGroups = new string[0],
+                    Created = new DateTime(2019, 7, 8, 22, 55, 52)
+                },
+                typeof(ArgumentException),
+                "Invalid list html"
+            };
         }
 
         public static IEnumerable<object[]> ParseCreateMessageRequestTestData()
@@ -394,6 +560,70 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                 {
                     ToPersonId = "Y2lzY29zcGFyazovL3VzL1BFT1BMRS9wZXJzb25JZA",
                     Markdown = "test"
+                }
+            };
+
+            yield return new object[]
+            {
+                new GlobalXMessage
+                {
+                    MessageParts = new[]
+                    {
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = "This contains an ordered list:"
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.OrderedList,
+                            Text = "List item 1 List item 2 List item 3",
+                            ListItems = new []
+                            {
+                                "List item 1",
+                                "List item 2",
+                                "List item 3"
+                            }
+                        }
+                    },
+                    RoomId = "Y2lzY29zcGFyazovL3VzL1JPT00vcm9vbUlk"
+                },
+                new CreateMessageRequest
+                {
+                    RoomId = "Y2lzY29zcGFyazovL3VzL1JPT00vcm9vbUlk",
+                    Markdown = "This contains an ordered list:\n1. List item 1\n1. List item 2\n1. List item 3\n"
+                }
+            };
+
+            yield return new object[]
+            {
+                new GlobalXMessage
+                {
+                    MessageParts = new[]
+                    {
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = "This contains an unordered list:"
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.UnorderedList,
+                            Text = "List item 1 List item 2 List item 3",
+                            ListItems = new []
+                            {
+                                "List item 1",
+                                "List item 2",
+                                "List item 3"
+                            }
+                        }
+                    },
+                    RoomId = "Y2lzY29zcGFyazovL3VzL1JPT00vcm9vbUlk"
+                },
+                new CreateMessageRequest
+                {
+                    RoomId = "Y2lzY29zcGFyazovL3VzL1JPT00vcm9vbUlk",
+                    Markdown = "This contains an unordered list:\n- List item 1\n- List item 2\n- List item 3\n"
                 }
             };
         }
