@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.1.0...v1.2.0) (2020-01-30)
+
+
+### Features
+
+* implement support for lists ([005f433](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/005f433f726335813c9c69a9dbcb2762229aff12))
+
 # [1.1.0](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.0.0...v1.1.0) (2020-01-22)
 
 
