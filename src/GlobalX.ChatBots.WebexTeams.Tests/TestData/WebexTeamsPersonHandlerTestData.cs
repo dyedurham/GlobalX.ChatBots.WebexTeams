@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using GlobalX.ChatBots.Core.People;
+using GlobalX.ChatBots.WebexTeams.Models;
 using GlobalXPerson = GlobalX.ChatBots.Core.People.Person;
 using WebexTeamsPerson = GlobalX.ChatBots.WebexTeams.Models.Person;
 
@@ -45,7 +46,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                 {
                     Id = "botId",
                     Emails = new []{ "TestBot@webex.bot" },
-                    PhoneNumbers = new string[0],
+                    PhoneNumbers = new PhoneNumber[0],
                     DisplayName = "TestBot",
                     NickName = "TestBot",
                     Avatar = "https://test-bot-avatar.com",

@@ -147,6 +147,12 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
     ""emails"": [
         ""test.person@test.com""
     ],
+    ""phoneNumbers"": [
+        {
+        ""type"": ""work"",
+        ""value"": ""+0012345678""
+        }
+    ],
     ""displayName"": ""Test Person"",
     ""nickName"": ""Testy"",
     ""firstName"": ""Test"",
@@ -161,6 +167,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                 {
                     Id = "personId",
                     Emails = new []{ "test.person@test.com" },
+                    PhoneNumbers = new []{ new PhoneNumber { Type = "work", Value = "+0012345678"} },
                     DisplayName = "Test Person",
                     NickName = "Testy",
                     FirstName = "Test",
@@ -194,7 +201,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                 {
                     Id = "botId",
                     Emails = new []{ "TestBot@webex.bot" },
-                    PhoneNumbers = new string[0],
+                    PhoneNumbers = new PhoneNumber[0],
                     DisplayName = "TestBot",
                     NickName = "TestBot",
                     Avatar = "https://test-bot-avatar.com",
