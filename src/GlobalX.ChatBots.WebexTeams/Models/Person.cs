@@ -6,7 +6,7 @@ namespace GlobalX.ChatBots.WebexTeams.Models
     {
         public string Id { get;set; }
         public string[] Emails { get; set; }
-        public string[] PhoneNumbers { get; set; }
+        public PhoneNumber[] PhoneNumbers { get; set; }
         public string DisplayName { get; set; }
         public string NickName { get; set; }
         public string FirstName { get; set; }

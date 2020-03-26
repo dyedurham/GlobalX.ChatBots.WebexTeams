@@ -301,8 +301,12 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services {
                     if (person.PhoneNumbers != null)
                     {
                         _personResponse.PhoneNumbers.ShouldNotBeNull();
-                        _personResponse.PhoneNumbers.OrderBy(x => x).SequenceEqual(person.PhoneNumbers.OrderBy(x => x))
-                            .ShouldBeTrue();
+                        _personResponse.PhoneNumbers.Length.ShouldBe(person.PhoneNumbers.Length);
+                        foreach (var phoneNumber in person.PhoneNumbers)
+                        {
+                            _personResponse.PhoneNumbers.ShouldContain(x =>
+                                x.Type == phoneNumber.Type && x.Value == phoneNumber.Value);
+                        }
                     }
                     else
                     {
