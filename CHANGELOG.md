@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.2.0...v1.2.1) (2020-03-26)
+
+
+### Bug Fixes
+
+* update representation of phone numbers to match what's returned from the API ([4ba51a7](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/4ba51a72c8ec2043b2b80f7390f39e93273821e8))
+
 # [1.2.0](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.1.0...v1.2.0) (2020-01-30)
 
 
