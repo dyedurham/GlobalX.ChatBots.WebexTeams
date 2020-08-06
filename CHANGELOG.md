@@ -1,3 +1,11 @@
+# [1.3.0](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.2.1...v1.3.0) (2020-08-06)
+
+
+### Features
+
+* add retry policy handler ([bcc9864](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/bcc986450a91fd4b2f1bc7c190b9e7ef9f69a3a4))
+* use the retry after header to determine the retry time ([dd4473e](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/dd4473eddb23c2ca5bee22bbd464ef9d779ad18f))
+
 ## [1.2.1](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.2.0...v1.2.1) (2020-03-26)
 
 
