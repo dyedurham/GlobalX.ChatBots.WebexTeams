@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using GlobalX.ChatBots.Core;
 using GlobalX.ChatBots.Core.Messages;
 using GlobalX.ChatBots.Core.People;
@@ -54,9 +55,19 @@ namespace GlobalX.ChatBots.WebexTeams
         {
             return HttpPolicyExtensions
                 .HandleTransientHttpError()
-                .OrResult(msg => msg.StatusCode == (HttpStatusCode)429)
-                .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(0.5 * Math.Pow(2,
-                    retryAttempt)));
+                .OrResult(msg => msg.StatusCode == (HttpStatusCode) 429)
+                .WaitAndRetryAsync(6,
+                    (retryAttempt, response, context) =>
+                    {
+                        if (response.Exception != null)
+                        {
+                            return TimeSpan.FromSeconds(0.5 * Math.Pow(2, retryAttempt));
+                        }
+
+                        var msg = response.Result;
+                        return msg.Headers.RetryAfter.Delta ?? TimeSpan.Zero;
+                    },
+                    (e, ts, i, ctx) => Task.CompletedTask);
         }
     }
 }
