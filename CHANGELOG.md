@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.3.0...v1.3.1) (2020-08-31)
+
+
+### Bug Fixes
+
+* add links to the list of allowed child nodes ([0e77cf7](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/0e77cf727325805b7fc2415f681267695e3cd3e9))
+
 # [1.3.0](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.2.1...v1.3.0) (2020-08-06)
 
 
