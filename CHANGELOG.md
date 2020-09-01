@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.3.1...v1.3.2) (2020-09-01)
+
+
+### Bug Fixes
+
+* also add spark-mention to list of allowed elements ([2a5e786](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/2a5e7863ad3d21093231ed15361dad4c2bd7d256))
+
 ## [1.3.1](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.3.0...v1.3.1) (2020-08-31)
 
 
