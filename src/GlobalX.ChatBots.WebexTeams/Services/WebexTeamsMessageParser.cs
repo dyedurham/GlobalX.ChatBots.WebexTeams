@@ -164,7 +164,7 @@ namespace GlobalX.ChatBots.WebexTeams.Services
 
         private IEnumerable<MessagePart> ParseMessagePart(XmlNode node)
         {
-            string[] allowedChildNodes = { "code", "ol", "ul", "li", "b", "strong", "i", "em", "a" };
+            string[] allowedChildNodes = { "code", "ol", "ul", "li", "b", "strong", "i", "em", "a", "spark-mention" };
 
             if (node.ChildNodes.OfType<XmlElement>().Any(x => !allowedChildNodes.Contains(x.Name)))
             {
