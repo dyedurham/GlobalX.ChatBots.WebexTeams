@@ -1,9 +1,11 @@
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using GlobalX.ChatBots.WebexTeams.Configuration;
+using GlobalX.ChatBots.WebexTeams.Models;
 using Microsoft.Extensions.Options;
 
 namespace GlobalX.ChatBots.WebexTeams.Services
@@ -44,7 +46,14 @@ namespace GlobalX.ChatBots.WebexTeams.Services
                 RequestUri = new Uri($"{_settings.WebexTeamsApiUrl}{path}"),
                 Content = body != null ? new StringContent(body, Encoding.UTF8, "application/json") : null
             };
+
             var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
+
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                throw new InvalidParentException();
+            }
+
             response.EnsureSuccessStatusCode();
 
             var responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
