@@ -1,4 +1,3 @@
-using System.Net.Http;
 using System.Threading.Tasks;
 using GlobalX.ChatBots.Core.Messages;
 using GlobalX.ChatBots.WebexTeams.Mappers;
