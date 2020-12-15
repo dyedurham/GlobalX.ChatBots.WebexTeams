@@ -47,6 +47,7 @@ namespace GlobalX.ChatBots.WebexTeams.Services
                 Content = body != null ? new StringContent(body, Encoding.UTF8, "application/json") : null
             };
 
+
             var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
 
             if (response.StatusCode == HttpStatusCode.BadRequest)
