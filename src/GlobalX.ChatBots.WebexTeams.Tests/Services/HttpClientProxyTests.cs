@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using GlobalX.ChatBots.WebexTeams.Configuration;
+using GlobalX.ChatBots.WebexTeams.Models;
 using GlobalX.ChatBots.WebexTeams.Services;
 using GlobalX.ChatBots.WebexTeams.Tests.TestServices;
 using Microsoft.Extensions.Options;
@@ -54,13 +55,23 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
         [Fact]
         public void BadRequestPostRequestShouldThrowInvalidParentException()
         {
-
+            this.Given(x => GivenAPath())
+                .And(x => GivenABody())
+                .And(x => GivenResponseIsBadRequest())
+                .When(x => WhenPostAsyncIsCalled())
+                .Then(x => ThenInvalidParentExceptionShouldBeThrown())
+                .BDDfy();
         }
 
         [Fact]
         public void ErrorInPostRequestShouldThrowHttpRequestException()
         {
-
+            this.Given(x => GivenAPath())
+                .And(x => GivenABody())
+                .And(x => GivenResponseIsUnsuccessful())
+                .When(x => WhenPostAsyncIsCalled())
+                .Then(x => ThenHttpRequestExceptionShouldBeThrown())
+                .BDDfy();
         }
 
         private void GivenAPath()
@@ -78,6 +89,16 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
             _messageHandler.SetResponse(HttpStatusCode.OK, "OK");
         }
 
+        private void GivenResponseIsBadRequest()
+        {
+            _messageHandler.SetResponse(HttpStatusCode.BadRequest, "Bad Request");
+        }
+
+        private void GivenResponseIsUnsuccessful()
+        {
+            _messageHandler.SetResponse(HttpStatusCode.InternalServerError, "Internal Server Error");
+        }
+
         private async void WhenPostAsyncIsCalled()
         {
             _exception = await Record.ExceptionAsync(async () => _response = await _subject.PostAsync(_path, _body));
@@ -86,6 +107,18 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
         private void ThenNoExceptionShouldBeThrown()
         {
             _exception.ShouldBeNull();
+        }
+
+        private void ThenInvalidParentExceptionShouldBeThrown()
+        {
+            _exception.ShouldNotBeNull();
+            _exception.ShouldBeOfType<InvalidParentException>();
+        }
+
+        private void ThenHttpRequestExceptionShouldBeThrown()
+        {
+            _exception.ShouldNotBeNull();
+            _exception.ShouldBeOfType<HttpRequestException>();
         }
 
         private void ThenHttpClientShouldReceiveARequest()
