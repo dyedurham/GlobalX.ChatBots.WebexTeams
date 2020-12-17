@@ -1,12 +1,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using GlobalX.ChatBots.Core.Messages;
 using GlobalX.ChatBots.WebexTeams.Mappers;
 using GlobalX.ChatBots.WebexTeams.Mappers.Profiles;
 using GlobalX.ChatBots.WebexTeams.Models;
 using GlobalX.ChatBots.WebexTeams.Services;
 using GlobalX.ChatBots.WebexTeams.Tests.TestData;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
@@ -46,9 +48,26 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
             WebexTeamsMessage apiResponse, GlobalXMessage parsedApiResponse, Person sender, GlobalXMessage output)
         {
             this.Given(x => GivenAGlobalXMessage(input))
-                .When(x => WhenSendingAMessage(parsedInput, apiResponse, parsedApiResponse, sender))
+                .And(x => GivenServicesReturnExpectedValues(parsedInput, apiResponse, parsedApiResponse, sender))
+                .When(x => WhenSendingAMessage())
                 .Then(x => ThenItShouldCallApiService())
                 .And(x => ThenItShouldReturnAMessage(output))
+                .BDDfy();
+        }
+
+        [Theory]
+        [MemberData(nameof(WebexTeamsMessageHandlerTestData.BadParentMessageTestData),
+            MemberType = typeof(WebexTeamsMessageHandlerTestData))]
+        internal void TestSendBadParentMessage(GlobalXMessage input, WebexTeamsMessage apiResponse)
+        {
+            this.Given(x => GivenAGlobalXMessage(input))
+                .And(x => GivenApiServiceThrowsInvalidParentExceptionForBadParent())
+                .And(x => GivenMessageParserReturnsCreateMessageRequest())
+                .And(x => GivenApiServiceReturnsGoodParent())
+                .And(x => GivenApiServiceReturnsCorrectResult(apiResponse))
+                .And(x => GivenServicesReturnSomeValues())
+                .When(x => WhenSendingAMessage())
+                .Then(x => ThenThereShouldBeTwoCallsToSendMessage())
                 .BDDfy();
         }
 
@@ -57,13 +76,55 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
             _input = input;
         }
 
-        private async void WhenSendingAMessage(CreateMessageRequest parsedInput, WebexTeamsMessage apiResponse,
+        private void GivenServicesReturnExpectedValues(CreateMessageRequest parsedInput, WebexTeamsMessage apiResponse,
             GlobalXMessage parsedApiResponse, Person sender)
         {
             _messageParser.ParseCreateMessageRequest(_input).Returns(parsedInput);
             _apiService.SendMessageAsync(parsedInput).Returns(Task.FromResult(apiResponse));
             _messageParser.ParseMessage(apiResponse).Returns(parsedApiResponse);
             _apiService.GetPersonAsync(apiResponse.PersonId).Returns(Task.FromResult(sender));
+        }
+
+        private void GivenApiServiceThrowsInvalidParentExceptionForBadParent()
+        {
+            _apiService.SendMessageAsync(Arg.Is<CreateMessageRequest>(x => x.ParentId == "badParentId")).Throws(new InvalidParentException());
+        }
+
+        private void GivenMessageParserReturnsCreateMessageRequest()
+        {
+            _messageParser.ParseCreateMessageRequest(Arg.Any<GlobalX.ChatBots.Core.Messages.Message>())
+                .ReturnsForAnyArgs(x => new CreateMessageRequest
+                {
+                    ParentId = ((GlobalX.ChatBots.Core.Messages.Message) x[0]).ParentId
+                });
+        }
+
+        private void GivenApiServiceReturnsGoodParent()
+        {
+            _apiService.GetMessageAsync(Arg.Is("badParentId")).Returns(Task.FromResult(new WebexTeamsMessage
+            {
+                Id = "goodParentId"
+            }));
+        }
+
+        private void GivenApiServiceReturnsCorrectResult(WebexTeamsMessage apiResponse)
+        {
+            _apiService.SendMessageAsync(Arg.Is<CreateMessageRequest>(x => x.ParentId == "goodParentId"))
+                .Returns(apiResponse);
+        }
+
+        private void GivenServicesReturnSomeValues()
+        {
+            _messageParser.ParseMessage(Arg.Is<WebexTeamsMessage>(x => x.ParentId == "goodParentId")).Returns(
+                new GlobalX.ChatBots.Core.Messages.Message
+                {
+                    ParentId = "goodParentId",
+                    Sender = new GlobalXPerson()
+                });
+        }
+
+        private async void WhenSendingAMessage()
+        {
             _output = await _subject.SendMessageAsync(_input);
         }
 
@@ -109,6 +170,14 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
                 () => _output.RoomId.ShouldBe(output.RoomId),
                 () => _output.RoomType.ShouldBe(output.RoomType)
             );
+        }
+
+        private void ThenThereShouldBeTwoCallsToSendMessage()
+        {
+            _apiService.Received()
+                .SendMessageAsync(Arg.Is<CreateMessageRequest>(x => x.ParentId == "badParentId"));
+            _apiService.Received()
+                .SendMessageAsync(Arg.Is<CreateMessageRequest>(x => x.ParentId == "goodParentId"));
         }
 
         private static void ComparePeople(GlobalXPerson expected, GlobalXPerson actual)
