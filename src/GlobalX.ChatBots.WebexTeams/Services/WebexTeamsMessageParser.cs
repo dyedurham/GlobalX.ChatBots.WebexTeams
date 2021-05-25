@@ -59,7 +59,7 @@ namespace GlobalX.ChatBots.WebexTeams.Services
 
         public CreateMessageRequest ParseCreateMessageRequest(GlobalXMessage message)
         {
-            var request = new CreateMessageRequest();
+            var request = new CreateMessageRequest {ParentId = message.ParentId};
             string roomDecoded;
 
             try
@@ -184,7 +184,7 @@ namespace GlobalX.ChatBots.WebexTeams.Services
                     parts.AddRange(ParseMessagePart(childNode));
                 }
             }
-            
+
             return new[] { ParseSingleMessagePart(node) };
         }
 

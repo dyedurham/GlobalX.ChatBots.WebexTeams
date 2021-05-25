@@ -4,6 +4,7 @@ namespace GlobalX.ChatBots.WebexTeams.Models {
     internal class Message {
         public string Id { get; set; }
         public string RoomId { get; set; }
+        public string ParentId { get; set; }
         public string RoomType { get; set; }
         public string ToPersonId { get; set; }
         public string ToPersonEmail { get; set; }

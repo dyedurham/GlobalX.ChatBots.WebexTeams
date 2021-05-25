@@ -386,6 +386,58 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                     RoomType = RoomType.Group
                 }
             };
+
+            // Reply message
+            yield return new object[]
+            {
+                new WebexTeamsMessage
+                {
+                    Id = "messageId",
+                    RoomId = "roomId",
+                    ParentId = "parentId",
+                    RoomType = "group",
+                    Text = "TestBot All test things",
+                    PersonId = "senderId",
+                    PersonEmail = "sender.email@test.com",
+                    Html = "<p><spark-mention data-object-type=\"person\" data-object-id=\"testBotId\">TestBot</spark-mention> <spark-mention data-object-type=\"groupMention\" data-group-type=\"all\">All</spark-mention> test things</p>",
+                    MentionedPeople = new[]{ "testBotId" },
+                    MentionedGroups = new []{ "all" },
+                    Created = new DateTime(2019, 7, 8, 22, 55, 52)
+                },
+                new GlobalXMessage
+                {
+                    Created = new DateTime(2019, 7, 8, 22, 55, 52),
+                    Text = "TestBot All test things",
+                    MessageParts = new[]
+                    {
+                        new MessagePart
+                        {
+                            MessageType = MessageType.PersonMention,
+                            Text = "TestBot",
+                            UserId = "testBotId"
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = " "
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.GroupMention,
+                            Text = "All",
+                            UserId = "all"
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = " test things",
+                        }
+                    },
+                    RoomId = "roomId",
+                    ParentId = "parentId",
+                    RoomType = RoomType.Group
+                }
+            };
         }
 
         public static IEnumerable<object[]> UnsuccessfulParseMessageTestData()
@@ -624,6 +676,48 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                 {
                     RoomId = "Y2lzY29zcGFyazovL3VzL1JPT00vcm9vbUlk",
                     Markdown = "This contains an unordered list:\n- List item 1\n- List item 2\n- List item 3\n"
+                }
+            };
+
+            // reply message
+            yield return new object[]
+            {
+                new GlobalXMessage
+                {
+                    Text = "TestBot All test things",
+                    MessageParts = new[]
+                    {
+                        new MessagePart
+                        {
+                            MessageType = MessageType.PersonMention,
+                            Text = "TestBot",
+                            UserId = "testBotId"
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = " "
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.GroupMention,
+                            Text = "All",
+                            UserId = "all"
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = " test things",
+                        }
+                    },
+                    RoomId = "Y2lzY29zcGFyazovL3VzL1JPT00vcm9vbUlk",
+                    ParentId = "parentId"
+                },
+                new CreateMessageRequest
+                {
+                    RoomId = "Y2lzY29zcGFyazovL3VzL1JPT00vcm9vbUlk",
+                    Markdown = "<@personId:testBotId|TestBot> <@all> test things",
+                    ParentId = "parentId"
                 }
             };
         }
