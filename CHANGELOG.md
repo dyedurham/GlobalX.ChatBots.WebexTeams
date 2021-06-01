@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.4.0...v1.4.1) (2021-06-01)
+
+
+### Bug Fixes
+
+* deployment files ([6d982bc](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/6d982bca86d4393e1361b4b4f4a1f1fd72586c89))
+
 # [1.4.0](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.3.2...v1.4.0) (2021-06-01)
 
 
