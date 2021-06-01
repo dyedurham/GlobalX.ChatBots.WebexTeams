@@ -1,3 +1,16 @@
+# [1.4.0](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.3.2...v1.4.0) (2021-06-01)
+
+
+### Bug Fixes
+
+* **dependencies:** update dependencies and remove reference to unnecessary dependency ([f0dc8b8](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/f0dc8b835afa3d1e38d2995f24f91c1c19020a52))
+* **WebexTeamsMessageParser:** send parentId to Webex API ([e2a7e78](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/e2a7e78dff003668cd90da18027a92eb1816db7c))
+
+
+### Features
+
+* **message-handler:** reply inline to messages ([8bafd4e](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/8bafd4e6847ca1c624a889839273bcc1349e330d))
+
 ## [1.3.2](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.3.1...v1.3.2) (2020-09-01)
 
 
