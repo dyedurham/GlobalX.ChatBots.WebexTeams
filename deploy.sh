@@ -14,7 +14,7 @@ fi
 echo "The next release number is $VERSION"
 
 mkdir -p ./artifacts
-dotnet pack src/GlobalX.ChatBots.WebexTeams/GlobalX.ChatBots.WebexTeams.csproj -p:PackageVersion=$VERSION -o ../../artifacts
+dotnet pack src/GlobalX.ChatBots.WebexTeams/GlobalX.ChatBots.WebexTeams.csproj -p:PackageVersion=$VERSION -o ./artifacts
 
 npx -p semantic-release@15.13.19 -p @semantic-release/changelog@3.0.4 -p @semantic-release/git@7.0.16 \
 -p @semantic-release/exec@3.3.5 -p @semantic-release/github@5.4.2 semantic-release
