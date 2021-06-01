@@ -5,6 +5,7 @@ namespace GlobalX.ChatBots.WebexTeams.Models {
         public string ToPersonEmail { get; set; }
         public string Text { get; set; }
         public string Markdown { get; set; }
+        public string ParentId { get; set; }
         public string[] Files { get; set; }
     }
 }

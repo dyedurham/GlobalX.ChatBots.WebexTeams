@@ -205,5 +205,23 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                 }
             };
         }
+
+        public static IEnumerable<object[]> BadParentMessageTestData()
+        {
+            yield return new object[]
+            {
+                new GlobalXMessage
+                {
+                    ParentId = "badParentId",
+                    Text = "test message"
+                },
+                new WebexTeamsMessage
+                {
+                    Text = "test message",
+                    ParentId = "goodParentId",
+                    PersonId = "personId"
+                }
+            };
+        }
     }
 }
