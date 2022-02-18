@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.4.1...v1.4.2) (2022-02-18)
+
+
+### Bug Fixes
+
+* **message-handler:** resend to root level parent as expected ([#48](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/issues/48)) ([96e2539](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/96e2539fb0d62f73126dd799a66d4f25a7078230))
+
 ## [1.4.1](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.4.0...v1.4.1) (2021-06-01)
 
 
