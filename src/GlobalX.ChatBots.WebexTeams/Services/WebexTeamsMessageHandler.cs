@@ -40,8 +40,8 @@ namespace GlobalX.ChatBots.WebexTeams.Services
 
         private async Task<Models.Message> ResendMessageWithRootParentId(Message message)
         {
-            var realParent = await _apiService.GetMessageAsync(message.ParentId);
-            message.ParentId = realParent.Id;
+            var parentMessage = await _apiService.GetMessageAsync(message.ParentId);
+            message.ParentId = parentMessage.ParentId;
 
             var request = _messageParser.ParseCreateMessageRequest(message);
             var result = await _apiService.SendMessageAsync(request).ConfigureAwait(false);
