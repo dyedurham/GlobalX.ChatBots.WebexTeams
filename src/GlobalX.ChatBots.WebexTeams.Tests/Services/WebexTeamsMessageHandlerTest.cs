@@ -103,7 +103,8 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
         {
             _apiService.GetMessageAsync(Arg.Is("badParentId")).Returns(Task.FromResult(new WebexTeamsMessage
             {
-                Id = "goodParentId"
+                Id = "badParentId",
+                ParentId = "goodParentId"
             }));
         }
 
