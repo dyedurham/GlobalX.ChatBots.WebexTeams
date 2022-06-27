@@ -169,7 +169,7 @@ namespace GlobalX.ChatBots.WebexTeams.Services
                 return ParseParagraphPart(node);
             }
 
-            string[] allowedChildNodes = { "code", "ol", "ul", "li", "b", "strong", "i", "em", "a", "spark-mention" };
+            string[] allowedChildNodes = { "code", "ol", "ul", "li", "b", "strong", "i", "em", "a", "spark-mention", "br" };
 
             if (node.ChildNodes.OfType<XmlElement>().Any(x => !allowedChildNodes.Contains(x.Name)))
             {
@@ -243,7 +243,7 @@ namespace GlobalX.ChatBots.WebexTeams.Services
                 part.MessageType = MessageType.Text;
             }
 
-            part.Text = node.InnerText;
+            part.Text = node.Name == "br" ? "\n" : node.InnerText;
             return part;
         }
 

@@ -395,10 +395,10 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                     Id = "messageId",
                     RoomId = "roomId",
                     RoomType = "group",
-                    Text = "TestBot All test things\n\nand more things.",
+                    Text = "TestBot All test things\n\nand more\nthings.",
                     PersonId = "senderId",
                     PersonEmail = "sender.email@test.com",
-                    Html = "<p><spark-mention data-object-type=\"person\" data-object-id=\"testBotId\">TestBot</spark-mention> <spark-mention data-object-type=\"groupMention\" data-group-type=\"all\">All</spark-mention> test things</p><p>and more things.</p>",
+                    Html = "<p><spark-mention data-object-type=\"person\" data-object-id=\"testBotId\">TestBot</spark-mention> <spark-mention data-object-type=\"groupMention\" data-group-type=\"all\">All</spark-mention> test things</p><p>and more<br/>things.</p>",
                     MentionedPeople = new[]{ "testBotId" },
                     MentionedGroups = new []{ "all" },
                     Created = new DateTime(2019, 7, 8, 22, 55, 52)
@@ -406,7 +406,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                 new GlobalXMessage
                 {
                     Created = new DateTime(2019, 7, 8, 22, 55, 52),
-                    Text = "TestBot All test things\n\nand more things.",
+                    Text = "TestBot All test things\n\nand more\nthings.",
                     MessageParts = new[]
                     {
                         new MessagePart
@@ -439,7 +439,17 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestData
                         new MessagePart
                         {
                             MessageType = MessageType.Text,
-                            Text = "and more things."
+                            Text = "and more"
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = "\n"
+                        },
+                        new MessagePart
+                        {
+                            MessageType = MessageType.Text,
+                            Text = "things."
                         }
                     },
                     RoomId = "roomId",
