@@ -46,12 +46,8 @@ namespace GlobalX.ChatBots.WebexTeams.Services
             else
             {
                 var xmlDocument = TryParseXml(message.Html);
-                var parts = new List<MessagePart>();
-                foreach (XmlNode node in xmlDocument.DocumentElement.ChildNodes)
-                {
-                    parts.AddRange(ParseMessagePart(node));
-                }
-                mappedMessage.MessageParts = parts.ToArray();
+                var parts = ParseMessagePart(xmlDocument.DocumentElement).ToArray();
+                mappedMessage.MessageParts = parts;
             }
 
             return mappedMessage;
@@ -168,6 +164,11 @@ namespace GlobalX.ChatBots.WebexTeams.Services
 
         private IEnumerable<MessagePart> ParseMessagePart(XmlNode node)
         {
+            if (node.ChildNodes.Count > 0 && node.ChildNodes.OfType<XmlNode>().All(x => x.Name == "p"))
+            {
+                return ParseParagraphPart(node);
+            }
+
             string[] allowedChildNodes = { "code", "ol", "ul", "li", "b", "strong", "i", "em", "a", "spark-mention" };
 
             if (node.ChildNodes.OfType<XmlElement>().Any(x => !allowedChildNodes.Contains(x.Name)))
@@ -187,9 +188,25 @@ namespace GlobalX.ChatBots.WebexTeams.Services
                 {
                     parts.AddRange(ParseMessagePart(childNode));
                 }
+
+                return parts;
             }
 
             return new[] { ParseSingleMessagePart(node) };
+        }
+
+        private IEnumerable<MessagePart> ParseParagraphPart(XmlNode node)
+        {
+            var children = new List<MessagePart>();
+            children.AddRange(ParseMessagePart(node.FirstChild));
+
+            for (var i = 1; i < node.ChildNodes.Count; i++)
+            {
+                children.Add(new MessagePart{MessageType = MessageType.Text, Text = "\n\n"});
+                children.AddRange(ParseMessagePart(node.ChildNodes[i]));
+            }
+
+            return children;
         }
 
         private MessagePart ParseSingleMessagePart(XmlNode node)
@@ -233,7 +250,7 @@ namespace GlobalX.ChatBots.WebexTeams.Services
         private MessagePart ParseListMessagePart(XmlNode node)
         {
             var part = new MessagePart();
-            var children = node.ChildNodes.Cast<XmlNode>();
+            var children = node.ChildNodes.Cast<XmlNode>().ToArray();
 
             if (children.Any(x => x.Name != "li"))
             {
