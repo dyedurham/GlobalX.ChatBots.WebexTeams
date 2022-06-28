@@ -1,3 +1,11 @@
+## [1.4.3](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.4.2...v1.4.3) (2022-06-28)
+
+
+### Bug Fixes
+
+* change br tags to newlines ([ce8beb9](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/ce8beb95736bc58262a38df9e529239523a34cab))
+* handle messages with 2 newlines in them ([b319481](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/b31948190246db3a6516ba50f8115ee58332d794))
+
 ## [1.4.2](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.4.1...v1.4.2) (2022-02-18)
 
 
