@@ -16,9 +16,8 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
 {
     public class HttpClientProxyTests
     {
-        private readonly HttpClient _httpClient;
         private readonly MockHttpMessageHandler _messageHandler;
-        private IHttpClientProxy _subject;
+        private readonly IHttpClientProxy _subject;
 
         private string _path;
         private string _body;
@@ -29,7 +28,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
         public HttpClientProxyTests()
         {
             _messageHandler = new MockHttpMessageHandler();
-            _httpClient = new HttpClient(_messageHandler);
+            var httpClient = new HttpClient(_messageHandler);
             var settingsContainer = Substitute.For<IOptions<WebexTeamsSettings>>();
             var settings = new WebexTeamsSettings
             {
@@ -37,7 +36,7 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
                 WebexTeamsApiUrl = "https://localhost:1234"
             };
             settingsContainer.Value.Returns(settings);
-            _subject = new HttpClientProxy(_httpClient, settingsContainer);
+            _subject = new HttpClientProxy(httpClient, settingsContainer);
         }
 
         [Fact]
@@ -74,6 +73,63 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
                 .BDDfy();
         }
 
+        [Fact]
+        public void GetRequestShouldSendRequest()
+        {
+            this.Given(x => GivenAPath())
+                .And(x => GivenResponseIsValid())
+                .When(x => WhenGetAsyncIsCalled())
+                .Then(x => ThenNoExceptionShouldBeThrown())
+                .And(x => ThenHttpClientShouldReceiveARequest())
+                .And(x => ThenItShouldReturn("OK"))
+                .BDDfy();
+        }
+
+        [Fact]
+        public void ErrorInGetRequestShouldThrowHttpRequestException()
+        {
+            this.Given(x => GivenAPath())
+                .And(x => GivenABody())
+                .And(x => GivenResponseIsUnsuccessful())
+                .When(x => WhenGetAsyncIsCalled())
+                .Then(x => ThenHttpRequestExceptionShouldBeThrown())
+                .BDDfy();
+        }
+
+        [Fact]
+        public void DeleteRequestShouldSendRequest()
+        {
+            this.Given(x => GivenAPath())
+                .And(x => GivenResponseIsValid())
+                .When(x => WhenDeleteAsyncIsCalled())
+                .Then(x => ThenNoExceptionShouldBeThrown())
+                .And(x => ThenHttpClientShouldReceiveARequest())
+                .BDDfy();
+        }
+
+        [Fact]
+        public void NotFoundInDeleteRequestShouldNotThrowHttpRequestException()
+        {
+            this.Given(x => GivenAPath())
+                .And(x => GivenABody())
+                .And(x => GivenResponseIsNotFound())
+                .When(x => WhenDeleteAsyncIsCalled())
+                .Then(x => ThenNoExceptionShouldBeThrown())
+                .And(x => ThenHttpClientShouldReceiveARequest())
+                .BDDfy();
+        }
+
+        [Fact]
+        public void ErrorInDeleteRequestShouldThrowHttpRequestException()
+        {
+            this.Given(x => GivenAPath())
+                .And(x => GivenABody())
+                .And(x => GivenResponseIsUnsuccessful())
+                .When(x => WhenDeleteAsyncIsCalled())
+                .Then(x => ThenHttpRequestExceptionShouldBeThrown())
+                .BDDfy();
+        }
+
         private void GivenAPath()
         {
             _path = "/api/endpoint";
@@ -99,9 +155,24 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
             _messageHandler.SetResponse(HttpStatusCode.InternalServerError, "Internal Server Error");
         }
 
+        private void GivenResponseIsNotFound()
+        {
+            _messageHandler.SetResponse(HttpStatusCode.NotFound, "Not Found");
+        }
+
         private async void WhenPostAsyncIsCalled()
         {
             _exception = await Record.ExceptionAsync(async () => _response = await _subject.PostAsync(_path, _body));
+        }
+
+        private async void WhenGetAsyncIsCalled()
+        {
+            _exception = await Record.ExceptionAsync(async () => _response = await _subject.GetAsync(_path, _body));
+        }
+
+        private async void WhenDeleteAsyncIsCalled()
+        {
+            _exception = await Record.ExceptionAsync(async () => await _subject.DeleteAsync(_path));
         }
 
         private void ThenNoExceptionShouldBeThrown()
@@ -125,6 +196,11 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.Services
         {
             _messageHandler.Inputs.Count.ShouldBe(1);
             _messageHandler.Inputs[0].ShouldNotBeNull();
+        }
+
+        private void ThenItShouldReturn(string response)
+        {
+            _response.ShouldBe(response);
         }
     }
 }
