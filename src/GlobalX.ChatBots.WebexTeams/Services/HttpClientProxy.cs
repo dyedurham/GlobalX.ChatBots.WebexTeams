@@ -70,7 +70,10 @@ namespace GlobalX.ChatBots.WebexTeams.Services
             };
 
             var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
+            if (response.StatusCode != HttpStatusCode.NotFound)
+            {
+                response.EnsureSuccessStatusCode();
+            }
         }
     }
 }

@@ -34,7 +34,10 @@ namespace GlobalX.ChatBots.WebexTeams.Tests.TestServices
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            Inputs.Add(await request.Content.ReadAsStringAsync());
+            var content = request.Content != null
+                ? await request.Content.ReadAsStringAsync()
+                : request.RequestUri.ToString();
+            Inputs.Add(content);
 
             return new HttpResponseMessage
             {
