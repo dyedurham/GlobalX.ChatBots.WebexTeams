@@ -169,7 +169,7 @@ namespace GlobalX.ChatBots.WebexTeams.Services
                 return ParseParagraphPart(node);
             }
 
-            string[] allowedChildNodes = { "code", "ol", "ul", "li", "b", "strong", "i", "em", "a", "spark-mention", "br" };
+            string[] allowedChildNodes = { "code", "ol", "ul", "li", "b", "strong", "i", "em", "a", "spark-mention", "br", "h3" };
 
             if (node.ChildNodes.OfType<XmlElement>().Any(x => !allowedChildNodes.Contains(x.Name)))
             {
