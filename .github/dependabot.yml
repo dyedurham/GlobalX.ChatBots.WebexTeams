@@ -1,0 +1,42 @@
+version: 2
+updates:
+  - package-ecosystem: nuget
+    directory: "/src/PockyBot.NET"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    reviewers:
+      - lauraducky
+      - jimcullenaus
+      - evangelinexx
+      - arthurs
+      - chromadream
+      - drewfreyling
+    commit-message:
+      prefix: "fix"
+      include: "scope"
+  - package-ecosystem: nuget
+    directory: "/src/PockyBot.NET.Tests"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    reviewers:
+      - lauraducky
+      - jimcullenaus
+      - evangelinexx
+      - arthurs
+      - chromadream
+      - drewfreyling
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    labels:
+      - dev-dependencies
+    ignore:
+      - dependency-name: GlobalX.ChatBots.Core
+      - dependency-name: Microsoft.Extensions.DependencyInjection.Abstractions
+      - dependency-name: Microsoft.Extensions.Hosting
+      - dependency-name: Microsoft.Extensions.Logging.Abstractions
+      - dependency-name: Microsoft.Extensions.Options.ConfigurationExtensions
+      - dependency-name: Npgsql.EntityFrameworkCore.PostgreSQL
+      - dependency-name: Scriban
