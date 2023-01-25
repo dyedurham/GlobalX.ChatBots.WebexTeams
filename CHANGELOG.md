@@ -1,3 +1,10 @@
+## [1.4.5](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.4.4...v1.4.5) (2023-01-25)
+
+
+### Bug Fixes
+
+* webex does h3 tags now apparently ([0e35f29](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/0e35f29725384037d03b3e91806a26bcd9bc3c02))
+
 ## [1.4.4](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.4.3...v1.4.4) (2022-07-19)
 
 
