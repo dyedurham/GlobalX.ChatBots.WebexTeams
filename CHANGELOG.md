@@ -1,3 +1,10 @@
+## [1.4.6](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.4.5...v1.4.6) (2023-01-26)
+
+
+### Bug Fixes
+
+* allow all valid heading tags as child nodes ([bc36a46](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/commit/bc36a4645845562006ec4f2161454059ed04081d))
+
 ## [1.4.5](https://github.com/GlobalX/GlobalX.ChatBots.WebexTeams/compare/v1.4.4...v1.4.5) (2023-01-25)
 
 
