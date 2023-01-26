@@ -69,7 +69,7 @@ jobs:
       - name: Restore
         run: dotnet restore src/GlobalX.ChatBots.WebexTeams.sln
       - name: Build
-        run: dotnet src/GlobalX.ChatBots.WebexTeams/GlobalX.ChatBots.WebexTeams.csproj
+        run: dotnet build src/GlobalX.ChatBots.WebexTeams/GlobalX.ChatBots.WebexTeams.csproj
       - name: Test
         run: dotnet test src/GlobalX.ChatBots.WebexTeams.Tests/GlobalX.ChatBots.WebexTeams.Tests.csproj
       - name: Run coverage script
